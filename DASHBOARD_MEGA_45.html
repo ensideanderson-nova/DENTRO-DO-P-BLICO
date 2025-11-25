@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENSIDE MEGA - 45 Categorias</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #43e97b;
+            --warning: #f5576c;
+            --info: #4facfe;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--white);
+        }
+
+        .container { max-width: 1600px; margin: 0 auto; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .header .company {
+            font-size: 1em;
+            opacity: 0.8;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-badge span {
+            display: block;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        /* Mega Status */
+        .mega-status {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: var(--dark);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .mega-status h2 { font-size: 1.5em; margin-bottom: 5px; }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            outline: none;
+        }
+
+        .search-box input::placeholder { color: rgba(255,255,255,0.5); }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover, .view-btn.active {
+            background: var(--primary);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--primary);
+        }
+
+        /* Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .categories-grid.lista {
+            grid-template-columns: 1fr;
+        }
+
+        .categories-grid.grande {
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
+
+        /* Card */
+        .category-card {
+            background: linear-gradient(135deg, var(--cor1, #667eea), var(--cor2, #764ba2));
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            background: rgba(255,255,255,0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-info h3 {
+            font-size: 1.1em;
+            margin-bottom: 3px;
+        }
+
+        .card-info .count {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .card-files {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 15px;
+        }
+
+        .card-files h4 {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.85em;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .file-item:last-child { border-bottom: none; }
+
+        .file-icon { opacity: 0.7; }
+
+        /* Info Section */
+        .info-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .header-stats { gap: 10px; }
+            .stat-badge { padding: 10px 15px; }
+            .stat-badge span { font-size: 1.5em; }
+            .categories-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Animation delays */
+        .category-card:nth-child(1) { animation-delay: 0.05s; }
+        .category-card:nth-child(2) { animation-delay: 0.1s; }
+        .category-card:nth-child(3) { animation-delay: 0.15s; }
+        .category-card:nth-child(4) { animation-delay: 0.2s; }
+        .category-card:nth-child(5) { animation-delay: 0.25s; }
+        .category-card:nth-child(6) { animation-delay: 0.3s; }
+        .category-card:nth-child(7) { animation-delay: 0.35s; }
+        .category-card:nth-child(8) { animation-delay: 0.4s; }
+        .category-card:nth-child(9) { animation-delay: 0.45s; }
+        .category-card:nth-child(10) { animation-delay: 0.5s; }
+        .category-card:nth-child(n+11) { animation-delay: 0.55s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>ENSIDE MEGA VISUALIZADOR</h1>
+            <p class="subtitle">45 Categorias | Maximo de Cores e Etiquetas</p>
+            <p class="company">Grupo Lider Madeiras | CEO: Anderson Enside</p>
+
+            <div class="header-stats">
+                <div class="stat-badge">
+                    <span>45</span>
+                    Categorias
+                </div>
+                <div class="stat-badge">
+                    <span id="totalArquivos">135</span>
+                    Arquivos
+                </div>
+                <div class="stat-badge">
+                    <span id="totalEtiquetas">225</span>
+                    Etiquetas
+                </div>
+                <div class="stat-badge">
+                    <span>45</span>
+                    Cores
+                </div>
+            </div>
+        </div>
+
+        <!-- Mega Status -->
+        <div class="mega-status">
+            <h2>SISTEMA MEGA COMPLETO!</h2>
+            <p>45 Categorias | 45 Cores Distintas | 225+ Etiquetas | Maxima Organizacao</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Procure uma categoria ou arquivo...">
+            </div>
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="mudarVista('grid')">Grid</button>
+                <button class="view-btn" onclick="mudarVista('lista')">Lista</button>
+                <button class="view-btn" onclick="mudarVista('grande')">Grande</button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filtroTipo('todos')">Todas (45)</button>
+            <button class="tab-btn" onclick="filtroTipo('documentos')">Documentos (5)</button>
+            <button class="tab-btn" onclick="filtroTipo('negocio')">Negocios (28)</button>
+            <button class="tab-btn" onclick="filtroTipo('tecnico')">Tecnico (11)</button>
+            <button class="tab-btn" onclick="filtroTipo('sensivel')">Sensivel (1)</button>
+        </div>
+
+        <!-- Grid -->
+        <div class="categories-grid" id="categoriesGrid"></div>
+
+        <!-- Info -->
+        <div class="info-section">
+            <h2>Sistema MEGA Expandido</h2>
+            <p><strong>45 Categorias</strong> | <strong id="totalArquivosInfo">135+</strong> Arquivos | <strong>45 Cores</strong> | <strong>225+ Etiquetas</strong></p>
+            <p style="margin-top: 10px; opacity: 0.7;">Execute: python3 scripts/triagem_mega_45.py --criar-estrutura</p>
+        </div>
+    </div>
+
+    <script>
+        // Dados das 45 categorias
+        const CATEGORIAS = {
+            '01_INBOX': { icone: '📥', nome: 'INBOX', tipo: 'documentos', descricao: 'Entrada de documentos novos', cor1: '#667eea', cor2: '#764ba2', tags: ['entrada', 'novo', 'processamento', 'triagem', 'pendente'], arquivos: ['documento_novo_1.txt', 'arquivo_entrada.pdf', 'pendente.docx'] },
+            '02_DOCUMENTOS_PESSOAIS': { icone: '👤', nome: 'DOCUMENTOS_PESSOAIS', tipo: 'documentos', descricao: 'RH, folha de pagamento, beneficios', cor1: '#f093fb', cor2: '#f5576c', tags: ['rh', 'pessoal', 'funcionario', 'folha_pagamento', 'beneficio'], arquivos: ['folha_pagamento_dez.xlsx', 'beneficios.pdf', 'contracheque.pdf'] },
+            '03_DOCUMENTOS_EMPRESA': { icone: '🏢', nome: 'DOCUMENTOS_EMPRESA', tipo: 'documentos', descricao: 'Contratos, notas fiscais, documentacao legal', cor1: '#4facfe', cor2: '#00f2fe', tags: ['legal', 'contrato', 'nfe', 'regulamento', 'compliance'], arquivos: ['contrato_empresa.pdf', 'regulamento_interno.docx', 'nfe_emitida.xml'] },
+            '04_CV_LATTES': { icone: '🎓', nome: 'CV_LATTES', tipo: 'documentos', descricao: 'Curriculos, Lattes, formacao academica', cor1: '#43e97b', cor2: '#38f9d7', tags: ['cv', 'curriculo', 'lattes', 'educacao', 'certificacao'], arquivos: ['cv_anderson.pdf', 'lattes_curriculum.pdf', 'certificado.pdf'] },
+            '05_VIAGENS_HOSPEDAGEM': { icone: '✈️', nome: 'VIAGENS_HOSPEDAGEM', tipo: 'documentos', descricao: 'Passagens, hoteis, itinerarios', cor1: '#fa709a', cor2: '#fee140', tags: ['viagem', 'hotel', 'hospedagem', 'passagem_aerea', 'turismo'], arquivos: ['passagem_aerea.pdf', 'hotel_booking.pdf', 'itinerario.txt'] },
+            '06_PRODUTOS_MADEIRA_PINUS': { icone: '🌲', nome: 'PRODUTOS_MADEIRA_PINUS', tipo: 'negocio', descricao: 'Pinus: precos, especificacoes, catalogo', cor1: '#30cfd0', cor2: '#330867', tags: ['pinus', 'madeira_mole', 'produto', 'tabela_preco', 'catalogo'], arquivos: ['pinus_tabela_precos.xlsx', 'pinus_especificacoes.pdf', 'catalogo_pinus.docx'] },
+            '07_PRODUTOS_MADEIRA_EUCALIPTO': { icone: '🌳', nome: 'PRODUTOS_MADEIRA_EUCALIPTO', tipo: 'negocio', descricao: 'Eucalipto: precos, especificacoes', cor1: '#a8edea', cor2: '#fed6e3', tags: ['eucalipto', 'madeira_dura', 'produto', 'tabela_preco'], arquivos: ['eucalipto_precos.xlsx', 'eucalipto_specs.pdf'] },
+            '08_PRODUTOS_MADEIRA_ESPECIAL': { icone: '💎', nome: 'PRODUTOS_MADEIRA_ESPECIAL', tipo: 'negocio', descricao: 'Madeiras especiais, premium, exoticas', cor1: '#ff9a56', cor2: '#ff6a88', tags: ['madeira_especial', 'premium', 'exotica', 'luxo'], arquivos: ['madeira_premium.pdf', 'madeira_exotica.xlsx'] },
+            '09_TABELAS_PRECOS': { icone: '💹', nome: 'TABELAS_PRECOS', tipo: 'negocio', descricao: 'Planilhas de precos, tabelas comparativas', cor1: '#2e2e78', cor2: '#662d8c', tags: ['preco', 'tabela', 'planilha', 'valor', 'custo'], arquivos: ['tabela_comparativa_2024.xlsx', 'planilha_cotacao.xlsx'] },
+            '10_PESO_UMIDADE': { icone: '⚖️', nome: 'PESO_UMIDADE', tipo: 'negocio', descricao: 'Calculos de peso, umidade (seco/verde/murcha)', cor1: '#bdc3c7', cor2: '#2c3e50', tags: ['peso', 'umidade', 'densidade', 'calculo', 'verde', 'seco'], arquivos: ['calculo_peso_verde.xlsx', 'densidade_madeiras.pdf'] },
+            '11_CATALOGOS_FORNECEDORES': { icone: '📑', nome: 'CATALOGOS_FORNECEDORES', tipo: 'negocio', descricao: 'Catalogos, brochuras de fornecedores', cor1: '#11998e', cor2: '#38ef7d', tags: ['catalogo', 'brochura', 'fornecedor', 'produto'], arquivos: ['catalogo_supplier_a.pdf', 'brochura_fornecedor.pdf'] },
+            '12_LOGISTICA_FRETES': { icone: '🚚', nome: 'LOGISTICA_FRETES', tipo: 'negocio', descricao: 'Fretes, transportadoras, cotacoes de entrega', cor1: '#ee0979', cor2: '#ff6a00', tags: ['frete', 'transporte', 'entrega', 'logistica', 'cotacao'], arquivos: ['cotacao_frete.xlsx', 'transportadora_dados.pdf'] },
+            '13_RASTREAMENTO': { icone: '🗺️', nome: 'RASTREAMENTO', tipo: 'negocio', descricao: 'Rastreamento de pedidos, tracking, localizacao', cor1: '#f6d365', cor2: '#fda085', tags: ['rastreamento', 'tracking', 'localizacao', 'gps'], arquivos: ['rastreamento_001.txt', 'gps_tracking.pdf'] },
+            '14_NFES_CTRC': { icone: '📋', nome: 'NFES_CTRC', tipo: 'negocio', descricao: 'Notas Fiscais, CTRCs, documentos de entrega', cor1: '#667eea', cor2: '#764ba2', tags: ['nfe', 'ctrc', 'nota_fiscal', 'xml', 'comprovante'], arquivos: ['nfe_transporte.xml', 'ctrc_documento.pdf'] },
+            '15_RETENCAO_TRIBUTARIA': { icone: '⚖️', nome: 'RETENCAO_TRIBUTARIA', tipo: 'negocio', descricao: 'Retencao de impostos, guias, ICMS, PIS', cor1: '#eb3349', cor2: '#f45c43', tags: ['retencao', 'imposto', 'icms', 'pis', 'cofins'], arquivos: ['guia_retencao.pdf', 'calculo_icms.xlsx'] },
+            '16_SEGUROS': { icone: '🛡️', nome: 'SEGUROS', tipo: 'negocio', descricao: 'Apolices de seguro, protecao de carga', cor1: '#1fa2ff', cor2: '#12d8fa', tags: ['seguro', 'apolice', 'protecao', 'carga', 'cobertura'], arquivos: ['apolice_seguro.pdf', 'cobertura_carga.docx'] },
+            '17_FINANCEIRO_RECEITAS': { icone: '💰', nome: 'FINANCEIRO_RECEITAS', tipo: 'negocio', descricao: 'Extratos, recibos, comprovantes de receita', cor1: '#43e97b', cor2: '#38f9d7', tags: ['receita', 'entrada', 'recebimento', 'comprovante', 'extrato'], arquivos: ['extrato_banco.pdf', 'comprovante_deposito.pdf'] },
+            '18_FINANCEIRO_DESPESAS': { icone: '💸', nome: 'FINANCEIRO_DESPESAS', tipo: 'negocio', descricao: 'Boletos, faturas, notas de despesa', cor1: '#fa709a', cor2: '#fee140', tags: ['despesa', 'saida', 'pagamento', 'boleto', 'fatura'], arquivos: ['boleto_pagamento.pdf', 'fatura_energia.pdf'] },
+            '19_FINANCEIRO_CONCILIACAO': { icone: '📊', nome: 'FINANCEIRO_CONCILIACAO', tipo: 'negocio', descricao: 'Conciliacao bancaria, relatorios financeiros', cor1: '#30cfd0', cor2: '#330867', tags: ['conciliacao', 'balanco', 'relatorio', 'reconciliacao'], arquivos: ['relatorio_conciliacao.xlsx', 'balanco_mensal.pdf'] },
+            '20_FINANCEIRO_IMPOSTOS': { icone: '📈', nome: 'FINANCEIRO_IMPOSTOS', tipo: 'negocio', descricao: 'Guias de impostos, DARF, DAS, GFIP', cor1: '#a8edea', cor2: '#fed6e3', tags: ['imposto', 'darf', 'das', 'gfip', 'guia_recolhimento'], arquivos: ['guia_darf.pdf', 'das_contribuicao.pdf'] },
+            '21_RECIBOS_COMPROVANTES': { icone: '✅', nome: 'RECIBOS_COMPROVANTES', tipo: 'negocio', descricao: 'Recibos, comprovantes de pagamento', cor1: '#11998e', cor2: '#38ef7d', tags: ['recibo', 'comprovante', 'recebimento', 'quitacao'], arquivos: ['recibo_assinado.pdf', 'comprovante_pix.pdf'] },
+            '22_BANCOS_DADOS': { icone: '🏦', nome: 'BANCOS_DADOS', tipo: 'negocio', descricao: 'Dados bancarios, agencias, contas, tokens', cor1: '#ee0979', cor2: '#ff6a00', tags: ['banco', 'conta', 'agencia', 'dados', 'token'], arquivos: ['dados_banco.txt', 'agencias_contato.xlsx'] },
+            '23_BANCOS_TRANSFERENCIAS': { icone: '💳', nome: 'BANCOS_TRANSFERENCIAS', tipo: 'negocio', descricao: 'Transferencias, DOC, TED, comprovantes', cor1: '#f6d365', cor2: '#fda085', tags: ['transferencia', 'doc', 'ted', 'pix', 'transacao'], arquivos: ['comprovante_ted.pdf', 'comprovante_pix.pdf'] },
+            '24_BANCOS_LINHAS_CREDITO': { icone: '📝', nome: 'BANCOS_LINHAS_CREDITO', tipo: 'negocio', descricao: 'Emprestimos, financiamentos, linhas de credito', cor1: '#667eea', cor2: '#764ba2', tags: ['credito', 'emprestimo', 'financiamento', 'linha', 'juros'], arquivos: ['contrato_emprestimo.pdf', 'linha_credito_dados.xlsx'] },
+            '25_CLIENTES_COTACOES': { icone: '📊', nome: 'CLIENTES_COTACOES', tipo: 'negocio', descricao: 'Cotacoes enviadas para clientes', cor1: '#f093fb', cor2: '#f5576c', tags: ['cotacao', 'proposta', 'cliente', 'preco', 'oferta'], arquivos: ['cotacao_cliente_abc.pdf', 'proposta_xyz.docx'] },
+            '26_CLIENTES_PEDIDOS': { icone: '🛒', nome: 'CLIENTES_PEDIDOS', tipo: 'negocio', descricao: 'Pedidos de clientes, OCs, confirmacoes', cor1: '#4facfe', cor2: '#00f2fe', tags: ['pedido', 'oc', 'ordem_compra', 'confirmacao', 'entrega'], arquivos: ['pedido_cliente.pdf', 'oc_confirmacao.xlsx'] },
+            '27_CLIENTES_FATURAMENTO': { icone: '💵', nome: 'CLIENTES_FATURAMENTO', tipo: 'negocio', descricao: 'Faturas emitidas, recibos de venda', cor1: '#43e97b', cor2: '#38f9d7', tags: ['fatura', 'nfe', 'venda', 'recebimento', 'cliente'], arquivos: ['fatura_emitida.pdf', 'nfe_venda.xml'] },
+            '28_CLIENTES_NEGOCIACOES': { icone: '🤝', nome: 'CLIENTES_NEGOCIACOES', tipo: 'negocio', descricao: 'Conversas, acordos, negociacoes com clientes', cor1: '#fa709a', cor2: '#fee140', tags: ['negociacao', 'acordo', 'contato', 'comunicacao'], arquivos: ['email_negociacao.txt', 'acordo_cliente.pdf'] },
+            '29_CLIENTES_RECLAMACOES': { icone: '⚠️', nome: 'CLIENTES_RECLAMACOES', tipo: 'negocio', descricao: 'Reclamacoes, problemas, resolucoes', cor1: '#30cfd0', cor2: '#330867', tags: ['reclamacao', 'problema', 'qualidade', 'devolucao'], arquivos: ['reclamacao_qualidade.pdf', 'resolucao_problema.docx'] },
+            '30_FORNECEDORES_CADASTRO': { icone: '📇', nome: 'FORNECEDORES_CADASTRO', tipo: 'negocio', descricao: 'Dados de fornecedores, CNPJ, contatos', cor1: '#bdc3c7', cor2: '#2c3e50', tags: ['fornecedor', 'cadastro', 'cnpj', 'contato', 'dados'], arquivos: ['cadastro_fornecedor.xlsx', 'dados_cnpj.pdf'] },
+            '31_FORNECEDORES_CONTRATOS': { icone: '📜', nome: 'FORNECEDORES_CONTRATOS', tipo: 'negocio', descricao: 'Contratos com fornecedores, prazos, condicoes', cor1: '#11998e', cor2: '#38ef7d', tags: ['contrato', 'fornecedor', 'acordo', 'prazo', 'condicao'], arquivos: ['contrato_fornecedor.pdf', 'condicoes_pagamento.docx'] },
+            '32_FORNECEDORES_COMPRAS': { icone: '🛍️', nome: 'FORNECEDORES_COMPRAS', tipo: 'negocio', descricao: 'Pedidos de compra, requisicoes, OCs', cor1: '#ee0979', cor2: '#ff6a00', tags: ['compra', 'pedido_compra', 'oc', 'requisicao'], arquivos: ['pedido_compra.pdf', 'oc_fornecedor.xlsx'] },
+            '33_FORNECEDORES_NEGOCIOS': { icone: '💼', nome: 'FORNECEDORES_NEGOCIOS', tipo: 'negocio', descricao: 'Negociacoes, prazos, descontos com fornecedores', cor1: '#f6d365', cor2: '#fda085', tags: ['negociacao', 'fornecedor', 'desconto', 'prazo'], arquivos: ['negociacao_desconto.txt', 'acordo_preco.pdf'] },
+            '34_PROJETOS_PLANEJAMENTO': { icone: '📋', nome: 'PROJETOS_PLANEJAMENTO', tipo: 'tecnico', descricao: 'Roadmap, cronograma, metas, objectives', cor1: '#667eea', cor2: '#764ba2', tags: ['projeto', 'planejamento', 'roadmap', 'cronograma', 'meta'], arquivos: ['roadmap_2025.xlsx', 'cronograma_projeto.pdf'] },
+            '35_PROJETOS_EXECUCAO': { icone: '⚙️', nome: 'PROJETOS_EXECUCAO', tipo: 'tecnico', descricao: 'Tarefas, sprints, evolucao, updates', cor1: '#f093fb', cor2: '#f5576c', tags: ['projeto', 'execucao', 'sprint', 'tarefa', 'progresso'], arquivos: ['sprint_tarefas.xlsx', 'progresso_update.docx'] },
+            '36_PROJETOS_DOCUMENTACAO': { icone: '📚', nome: 'PROJETOS_DOCUMENTACAO', tipo: 'tecnico', descricao: 'Documentacao de projetos, specs, analises', cor1: '#4facfe', cor2: '#00f2fe', tags: ['documentacao', 'spec', 'analise', 'requisito', 'design'], arquivos: ['especificacao_projeto.pdf', 'requisitos.docx'] },
+            '37_CODIGO_PYTHON': { icone: '🐍', nome: 'CODIGO_PYTHON', tipo: 'tecnico', descricao: 'Scripts Python, programacao, automacao', cor1: '#43e97b', cor2: '#38f9d7', tags: ['python', 'script', 'programacao', 'codigo', 'automacao'], arquivos: ['script_triagem.py', 'automacao.py'] },
+            '38_CODIGO_JAVASCRIPT': { icone: '🟨', nome: 'CODIGO_JAVASCRIPT', tipo: 'tecnico', descricao: 'JavaScript, HTML, CSS, Frontend', cor1: '#fa709a', cor2: '#fee140', tags: ['javascript', 'html', 'css', 'frontend', 'web'], arquivos: ['dashboard.html', 'app.js'] },
+            '39_CODIGO_SQL_DATABASE': { icone: '🗄️', nome: 'CODIGO_SQL_DATABASE', tipo: 'tecnico', descricao: 'SQL, queries, banco de dados, schemas', cor1: '#30cfd0', cor2: '#330867', tags: ['sql', 'database', 'query', 'schema', 'dados'], arquivos: ['queries.sql', 'schema.sql'] },
+            '40_APIS_INTEGRACAO': { icone: '🔗', nome: 'APIS_INTEGRACAO', tipo: 'tecnico', descricao: 'APIs, webhooks, integracoes, endpoints', cor1: '#bdc3c7', cor2: '#2c3e50', tags: ['api', 'webhook', 'integracao', 'endpoint', 'rest'], arquivos: ['api_documentation.md', 'webhook_config.json'] },
+            '41_DOCUMENTACAO_TECNICA': { icone: '📖', nome: 'DOCUMENTACAO_TECNICA', tipo: 'tecnico', descricao: 'README, docs, manuais tecnicos', cor1: '#11998e', cor2: '#38ef7d', tags: ['documentacao', 'readme', 'manual', 'guia', 'tutorial'], arquivos: ['README.md', 'MANUAL.pdf'] },
+            '42_SISTEMAS_BACKUP': { icone: '💾', nome: 'SISTEMAS_BACKUP', tipo: 'tecnico', descricao: 'Backups, snapshots, restauracao', cor1: '#ee0979', cor2: '#ff6a00', tags: ['backup', 'snapshot', 'restore', 'arquivo_completo'], arquivos: ['backup_completo.zip', 'snapshot_2024.tar'] },
+            '43_SISTEMAS_LOGS_CONFIGS': { icone: '⚙️', nome: 'SISTEMAS_LOGS_CONFIGS', tipo: 'tecnico', descricao: 'Logs, configuracoes, variaveis de ambiente', cor1: '#f6d365', cor2: '#fda085', tags: ['log', 'config', 'configuracao', 'variavel', 'ambiente'], arquivos: ['app.log', 'config.env'] },
+            '44_SEGURANCA_SENHAS': { icone: '🔐', nome: 'SEGURANCA_SENHAS', tipo: 'sensivel', descricao: 'Senhas, tokens, chaves de acesso (CONFIDENCIAL)', cor1: '#eb3349', cor2: '#f45c43', tags: ['senha', 'token', 'chave', 'credencial', 'seguranca'], arquivos: ['senhas_backup.txt', 'chaves_api.txt'] },
+            '45_ARQUIVOS_ANTIGOS_BACKUP': { icone: '📦', nome: 'ARQUIVOS_ANTIGOS_BACKUP', tipo: 'tecnico', descricao: 'Backups antigos, historico, arquivo morto', cor1: '#95a5a6', cor2: '#7f8c8d', tags: ['backup_antigo', 'historico', 'arquivo', 'obsoleto', 'legado'], arquivos: ['backup_2023.zip', 'arquivo_antigo.pdf'] }
+        };
+
+        let filtroAtual = 'todos';
+        let vistaAtual = 'grid';
+
+        function renderizarCards() {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = '';
+            grid.className = `categories-grid ${vistaAtual === 'grid' ? '' : vistaAtual}`;
+
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            let totalArquivos = 0;
+            let totalTags = 0;
+
+            Object.entries(CATEGORIAS).sort().forEach(([codigo, cat], index) => {
+                // Filtro por tipo
+                if (filtroAtual !== 'todos' && cat.tipo !== filtroAtual) return;
+
+                // Filtro por busca
+                if (searchTerm && !cat.nome.toLowerCase().includes(searchTerm) && !cat.descricao.toLowerCase().includes(searchTerm)) return;
+
+                totalArquivos += cat.arquivos ? cat.arquivos.length : 0;
+                totalTags += cat.tags ? cat.tags.length : 0;
+
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.style.setProperty('--cor1', cat.cor1);
+                card.style.setProperty('--cor2', cat.cor2);
+                card.style.animationDelay = `${Math.min(index * 0.05, 0.5)}s`;
+
+                const tagsHtml = cat.tags.slice(0, 6).map(tag => `<span class="tag">${tag}</span>`).join('');
+                const filesHtml = cat.arquivos.slice(0, 3).map(f => `
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <span>${f}</span>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-icon">${cat.icone}</div>
+                        <div class="card-info">
+                            <h3>${codigo.split('_')[0]} ${cat.nome}</h3>
+                            <span class="count">${cat.arquivos.length} arquivos</span>
+                        </div>
+                    </div>
+                    <div class="card-tags">${tagsHtml}</div>
+                    <p class="card-desc">${cat.descricao}</p>
+                    <div class="card-files">
+                        <h4>Arquivos</h4>
+                        ${filesHtml}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            document.getElementById('totalArquivos').textContent = totalArquivos;
+            document.getElementById('totalEtiquetas').textContent = totalTags;
+            document.getElementById('totalArquivosInfo').textContent = totalArquivos + '+';
+        }
+
+        function filtroTipo(tipo) {
+            filtroAtual = tipo;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderizarCards();
+        }
+
+        function mudarVista(vista) {
+            vistaAtual = vista;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderizarCards();
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', renderizarCards);
+
+        // Carregar JSON externo se existir
+        async function carregarJSON() {
+            try {
+                const response = await fetch('categorias_45.json');
+                if (response.ok) {
+                    const dados = await response.json();
+                    Object.assign(CATEGORIAS, dados);
+                    console.log('JSON carregado com sucesso');
+                }
+            } catch (e) {
+                console.log('Usando dados embutidos');
+            }
+            renderizarCards();
+        }
+
+        // Inicializar
+        carregarJSON();
+    </script>
+</body>
+</html>

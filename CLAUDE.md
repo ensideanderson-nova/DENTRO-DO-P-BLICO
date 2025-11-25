@@ -250,5 +250,39 @@ MIT License - Copyright (c) 2025 Anderson Enside
 
 ---
 
+## Sistema MEGA (45 Categorias)
+
+O sistema tambem suporta a versao MEGA com 45 categorias especializadas para empresas do setor madeireiro:
+
+### Grupos de Categorias MEGA
+
+| Grupo | Categorias | Descricao |
+|-------|-----------|-----------|
+| Documentos | 01-05 | INBOX, Pessoais, Empresa, CV/Lattes, Viagens |
+| Produtos Madeira | 06-11 | Pinus, Eucalipto, Especial, Precos, Peso/Umidade, Catalogos |
+| Logistica | 12-16 | Fretes, Rastreamento, NFes/CTRC, Tributaria, Seguros |
+| Financeiro | 17-21 | Receitas, Despesas, Conciliacao, Impostos, Recibos |
+| Bancos | 22-24 | Dados, Transferencias, Linhas Credito |
+| Clientes | 25-29 | Cotacoes, Pedidos, Faturamento, Negociacoes, Reclamacoes |
+| Fornecedores | 30-33 | Cadastro, Contratos, Compras, Negocios |
+| Projetos | 34-36 | Planejamento, Execucao, Documentacao |
+| Desenvolvimento | 37-41 | Python, JavaScript, SQL, APIs, Docs Tecnica |
+| Sistemas | 42-45 | Backup, Logs/Configs, Seguranca/Senhas, Arquivos Antigos |
+
+### Comandos Sistema MEGA
+
+```bash
+# Criar estrutura MEGA (45 pastas + arquivos exemplo)
+python3 scripts/triagem_mega_45.py --criar-estrutura
+
+# Organizar arquivos com 45 categorias
+python3 scripts/triagem_mega_45.py ~/Downloads
+
+# Abrir Dashboard MEGA
+open DASHBOARD_MEGA_45.html
+```
+
+---
+
 *Ultima atualizacao: 2025-11-25*
-*Versao: 2.0*
+*Versao: 4.0 MEGA*
