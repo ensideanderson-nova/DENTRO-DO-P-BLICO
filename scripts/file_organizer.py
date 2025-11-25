@@ -17,7 +17,7 @@ class FileOrganizer:
     """Organiza arquivos PDF na estrutura ENSIDE_ORGANIZADO"""
 
     # Caminho base do sistema
-    BASE_PATH = Path("/Users/Shared/ENSIDE_ORGANIZADO")
+    BASE_PATH = Path.home() / "ENSIDE_ORGANIZADO"
 
     # Mapeamento de bancos
     BANCOS_MAP = {

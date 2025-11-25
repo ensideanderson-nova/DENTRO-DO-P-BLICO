@@ -18,7 +18,7 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-BASE="/Users/Shared/ENSIDE_ORGANIZADO"
+BASE="$HOME/ENSIDE_ORGANIZADO"
 
 echo ""
 echo "============================================================"
