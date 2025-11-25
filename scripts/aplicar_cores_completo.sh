@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE="/Users/Shared/ENSIDE_ORGANIZADO"
+BASE="$HOME/ENSIDE_ORGANIZADO"
 
 echo "🎨 APLICANDO CORES EM TODO O SISTEMA..."
 

@@ -2,7 +2,7 @@
 
 HOME_DIR="$HOME"
 WORKSPACE="$HOME/WORKSPACE"
-BASE="/Users/Shared/ENSIDE_ORGANIZADO"
+BASE="$HOME/ENSIDE_ORGANIZADO"
 
 echo "╔═══════════════════════════════════════════════════╗"
 echo "║   🚀 ORGANIZANDO HOME COMPLETA                    ║"

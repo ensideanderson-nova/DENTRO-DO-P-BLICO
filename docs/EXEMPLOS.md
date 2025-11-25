@@ -48,12 +48,12 @@ MODO SIMULAÇÃO - Nenhum arquivo será movido
 
 Análise de: contrato_cliente_xpto.pdf
 → Detectado: Contrato
-→ Destino: /Users/Shared/ENSIDE_ORGANIZADO/07_CLIENTES/Contratos/
+→ Destino: ~/ENSIDE_ORGANIZADO/07_CLIENTES/Contratos/
 → Cor: Rosa
 
 Análise de: boleto_fornecedor.pdf
 → Detectado: Boleto
-→ Destino: /Users/Shared/ENSIDE_ORGANIZADO/06_FINANCEIRO/Contas_Pagar/
+→ Destino: ~/ENSIDE_ORGANIZADO/06_FINANCEIRO/Contas_Pagar/
 → Cor: Amarelo
 
 Total: 2 arquivos analisados
@@ -223,8 +223,8 @@ python3 ~/.claude/skills/organize-pdfs/gerar_html_completo.py
 open ~/Desktop/SISTEMA_ENSIDE_COMPLETO.html
 
 # 3. Fazer backup do mês
-cp -r /Users/Shared/ENSIDE_ORGANIZADO/06_FINANCEIRO/2025/11_Novembro \
-   /Users/Shared/ENSIDE_ORGANIZADO/10_BACKUP/Mensal/2025/11_Novembro_$(date +%Y%m%d)
+cp -r ~/ENSIDE_ORGANIZADO/06_FINANCEIRO/2025/11_Novembro \
+   ~/ENSIDE_ORGANIZADO/10_BACKUP/Mensal/2025/11_Novembro_$(date +%Y%m%d)
 ```
 
 ### Fluxo 3: Auditoria de Documentos
@@ -239,7 +239,7 @@ python3 ~/.claude/skills/organize-pdfs/gerar_html_completo.py
 # Abrir HTML e usar filtro "Bancos"
 
 # 3. Exportar lista de arquivos
-find /Users/Shared/ENSIDE_ORGANIZADO/05_BANCOS -type f -name "*.pdf" > lista_documentos_bancarios.txt
+find ~/ENSIDE_ORGANIZADO/05_BANCOS -type f -name "*.pdf" > lista_documentos_bancarios.txt
 ```
 
 ## Integração com Outros Sistemas
@@ -268,12 +268,12 @@ end run
 python3 ~/.claude/skills/organize-pdfs/importador_universal.py ~/Downloads
 
 # Fazer backup
-BACKUP_DIR="/Users/Shared/ENSIDE_ORGANIZADO/10_BACKUP/Diario/$(date +%Y%m%d)"
+BACKUP_DIR="~/ENSIDE_ORGANIZADO/10_BACKUP/Diario/$(date +%Y%m%d)"
 mkdir -p "$BACKUP_DIR"
 
 # Copiar categorias importantes
-cp -r /Users/Shared/ENSIDE_ORGANIZADO/06_FINANCEIRO "$BACKUP_DIR/"
-cp -r /Users/Shared/ENSIDE_ORGANIZADO/05_BANCOS "$BACKUP_DIR/"
+cp -r ~/ENSIDE_ORGANIZADO/06_FINANCEIRO "$BACKUP_DIR/"
+cp -r ~/ENSIDE_ORGANIZADO/05_BANCOS "$BACKUP_DIR/"
 
 # Gerar HTML
 python3 ~/.claude/skills/organize-pdfs/gerar_html_completo.py
@@ -335,8 +335,8 @@ Comparativo de Taxas
 **Classificação Manual:**
 ```bash
 # Mover para categoria correta
-mv "/Users/Shared/ENSIDE_ORGANIZADO/00_TRIAGEM_POR_PESSOA/A_Classificar/documento_generico.pdf" \
-   "/Users/Shared/ENSIDE_ORGANIZADO/02_DOCUMENTOS_EMPRESA/Contratos/"
+mv "~/ENSIDE_ORGANIZADO/00_TRIAGEM_POR_PESSOA/A_Classificar/documento_generico.pdf" \
+   "~/ENSIDE_ORGANIZADO/02_DOCUMENTOS_EMPRESA/Contratos/"
 ```
 
 ### Caso 3: Arquivo Duplicado
@@ -351,7 +351,7 @@ mv "/Users/Shared/ENSIDE_ORGANIZADO/00_TRIAGEM_POR_PESSOA/A_Classificar/document
 **Verificar Duplicatas:**
 ```bash
 # Encontrar arquivos duplicados
-find /Users/Shared/ENSIDE_ORGANIZADO -type f -name "*_2.pdf"
+find ~/ENSIDE_ORGANIZADO -type f -name "*_2.pdf"
 ```
 
 ## Dicas e Truques
@@ -369,17 +369,17 @@ done
 
 ```bash
 # Encontrar todos os extratos do Itaú
-find /Users/Shared/ENSIDE_ORGANIZADO/05_BANCOS/Itau -name "*extrato*"
+find ~/ENSIDE_ORGANIZADO/05_BANCOS/Itau -name "*extrato*"
 
 # Encontrar documentos de novembro de 2025
-find /Users/Shared/ENSIDE_ORGANIZADO -path "*/2025/11/*"
+find ~/ENSIDE_ORGANIZADO -path "*/2025/11/*"
 ```
 
 ### Dica 3: Estatísticas
 
 ```bash
 # Contar arquivos por categoria
-for dir in /Users/Shared/ENSIDE_ORGANIZADO/*/; do
+for dir in ~/ENSIDE_ORGANIZADO/*/; do
     echo "$(basename "$dir"): $(find "$dir" -type f | wc -l) arquivos"
 done
 ```
