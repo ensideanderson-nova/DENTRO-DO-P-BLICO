@@ -12,7 +12,7 @@ from datetime import datetime
 import re
 import subprocess
 
-BASE = Path("/Users/Shared/ENSIDE_ORGANIZADO")
+BASE = Path.home() / "ENSIDE_ORGANIZADO"
 WORKSPACE = Path.home() / "WORKSPACE"
 
 # Estatísticas

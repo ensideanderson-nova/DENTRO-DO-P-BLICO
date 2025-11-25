@@ -16,7 +16,7 @@ import re
 class GeneralOrganizer:
     """Organizador geral de arquivos (não só PDFs)"""
 
-    BASE_PATH = Path("/Users/Shared/ENSIDE_ORGANIZADO")
+    BASE_PATH = Path.home() / "ENSIDE_ORGANIZADO"
     WORKSPACE = Path.home() / "WORKSPACE"
 
     # Mapeamento de extensões para categorias

@@ -65,7 +65,7 @@ bash install.sh
 ```
 
 O script irá:
-1. Criar a estrutura em `/Users/Shared/ENSIDE_ORGANIZADO/`
+1. Criar a estrutura em `~/ENSIDE_ORGANIZADO/`
 2. Instalar a skill do Claude Code em `~/.claude/skills/organize-pdfs/`
 3. Criar workspace em `~/WORKSPACE/`
 4. Aplicar cores no Finder
@@ -76,7 +76,7 @@ O script irá:
 
 ```bash
 # Verificar estrutura principal
-ls -la /Users/Shared/ENSIDE_ORGANIZADO/
+ls -la ~/ENSIDE_ORGANIZADO/
 
 # Verificar skill
 ls -la ~/.claude/skills/organize-pdfs/
@@ -97,10 +97,10 @@ Se preferir instalar manualmente:
 
 ```bash
 # Criar diretório principal
-sudo mkdir -p /Users/Shared/ENSIDE_ORGANIZADO
+sudo mkdir -p ~/ENSIDE_ORGANIZADO
 
 # Ajustar permissões
-sudo chown -R $USER:staff /Users/Shared/ENSIDE_ORGANIZADO
+sudo chown -R $USER:staff ~/ENSIDE_ORGANIZADO
 
 # Executar script de criação
 bash scripts/organize_master.sh
@@ -191,8 +191,8 @@ O Claude deve ativar a skill automaticamente.
 
 ```bash
 # Ajustar permissões
-sudo chown -R $USER:staff /Users/Shared/ENSIDE_ORGANIZADO
-chmod -R 755 /Users/Shared/ENSIDE_ORGANIZADO
+sudo chown -R $USER:staff ~/ENSIDE_ORGANIZADO
+chmod -R 755 ~/ENSIDE_ORGANIZADO
 ```
 
 ### Erro: Python não encontrado
@@ -268,7 +268,7 @@ chmod +x ~/.claude/skills/organize-pdfs/*.{py,sh}
 
 ```bash
 # Remover estrutura principal (CUIDADO: apaga todos os documentos!)
-sudo rm -rf /Users/Shared/ENSIDE_ORGANIZADO
+sudo rm -rf ~/ENSIDE_ORGANIZADO
 
 # Remover skill
 rm -rf ~/.claude/skills/organize-pdfs

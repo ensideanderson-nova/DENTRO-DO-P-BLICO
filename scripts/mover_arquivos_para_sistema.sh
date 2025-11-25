@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE="/Users/Shared/ENSIDE_ORGANIZADO"
+BASE="$HOME/ENSIDE_ORGANIZADO"
 HOME_DIR="$HOME"
 
 echo "╔═══════════════════════════════════════════════════╗"
@@ -277,7 +277,7 @@ echo "   • Arquivos movidos: $total_movidos"
 echo "   • Erros: $total_erros"
 echo ""
 echo "📁 VERIFIQUE:"
-echo "   • Sistema: /Users/Shared/ENSIDE_ORGANIZADO/"
+echo "   • Sistema: ~/ENSIDE_ORGANIZADO/"
 echo "   • Workspace: ~/WORKSPACE/"
 echo ""
 echo "🎨 CORES aplicadas automaticamente!"

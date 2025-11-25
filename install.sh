@@ -68,10 +68,10 @@ pip3 install -r requirements.txt --quiet
 print_success "Dependências instaladas"
 
 # Criar estrutura principal
-print_status "Criando estrutura em /Users/Shared/ENSIDE_ORGANIZADO/..."
-if [ ! -d "/Users/Shared/ENSIDE_ORGANIZADO" ]; then
-    sudo mkdir -p /Users/Shared/ENSIDE_ORGANIZADO
-    sudo chown -R $USER:staff /Users/Shared/ENSIDE_ORGANIZADO
+print_status "Criando estrutura em ~/ENSIDE_ORGANIZADO/..."
+ENSIDE_DIR="$HOME/ENSIDE_ORGANIZADO"
+if [ ! -d "$ENSIDE_DIR" ]; then
+    mkdir -p "$ENSIDE_DIR"
 fi
 
 # Executar script de criação
@@ -210,7 +210,7 @@ echo "╔═══════════════════════�
 echo "║              INSTALAÇÃO CONCLUÍDA COM SUCESSO!            ║"
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
-print_success "Sistema instalado em: /Users/Shared/ENSIDE_ORGANIZADO/"
+print_success "Sistema instalado em: ~/ENSIDE_ORGANIZADO/"
 print_success "Workspace criado em: ~/WORKSPACE/"
 print_success "Skill instalada em: ~/.claude/skills/organize-pdfs/"
 echo ""

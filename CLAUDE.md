@@ -143,11 +143,11 @@ Interface web interativa para visualizar e navegar nas categorias.
 
 ```bash
 # Sistema principal
-/Users/Shared/ENSIDE_ORGANIZADO/
+~/ENSIDE_ORGANIZADO/
 
 # Categorias
-/Users/Shared/ENSIDE_ORGANIZADO/01_INBOX/
-/Users/Shared/ENSIDE_ORGANIZADO/02_DOCUMENTOS_PESSOAIS/
+~/ENSIDE_ORGANIZADO/01_INBOX/
+~/ENSIDE_ORGANIZADO/02_DOCUMENTOS_PESSOAIS/
 ... (ate 15_BACKUP/)
 ```
 

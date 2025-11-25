@@ -218,7 +218,7 @@ ENSIDE-PUBLICO/
 ## Estrutura de Destino
 
 ```
-/Users/Shared/ENSIDE_ORGANIZADO/
+~/ENSIDE_ORGANIZADO/
 ├── 01_INBOX/
 │   ├── Para_Classificar/
 │   ├── Downloads/

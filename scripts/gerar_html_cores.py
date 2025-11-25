@@ -8,7 +8,7 @@ import os
 import json
 
 # Sistema criado
-BASE = "/Users/Shared/ENSIDE_ORGANIZADO"
+BASE = os.path.expanduser("~/ENSIDE_ORGANIZADO")
 
 # Cores das categorias
 CORES = {
