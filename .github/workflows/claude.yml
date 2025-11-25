@@ -66,4 +66,3 @@ jobs:
         run: |
           echo "⚠️ Nenhuma ANTHROPIC_API_KEY nem CLAUDE_CODE_OAUTH_TOKEN definida. Pulando a execução do Claude Code."
 
-
