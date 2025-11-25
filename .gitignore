@@ -84,3 +84,29 @@ $RECYCLE.BIN/
 *.env
 credentials.json
 secrets.json
+
+# Binary/Document files (should not be in repo)
+*.pdf
+*.xlsx
+*.xls
+*.doc
+*.docx
+*.pptx
+*.ppt
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.heic
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.mp4
+*.mov
+*.mp3
+*.wav
+
+# Temporary/accidental files
+remixed-*.html
+ENSIDE-PUBLICO
