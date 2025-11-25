@@ -91,7 +91,7 @@ jobs:
             echo "EOF" >> $GITHUB_ENV
           else
             # Extrai o texto da resposta com tratamento de erro melhorado
-            RESPONSE_TEXT=$(echo "$BODY" | jq -r '.content[0].text // empty')
+            RESPONSE_TEXT=$(echo "$BODY" | jq -r '.content[0].text // ""')
             if [ -z "$RESPONSE_TEXT" ]; then
               echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
               echo "⚠️ Resposta recebida mas sem conteúdo de texto. Verifique o formato da resposta da API." >> $GITHUB_ENV
