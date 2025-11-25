@@ -1,5 +1,7 @@
 # Sistema ENSIDE - Organizacao Inteligente de Documentos v2.0
 
+[![Claude AI Integration](https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/actions/workflows/claude-integration.yml/badge.svg)](https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/actions/workflows/claude-integration.yml)
+
 Sistema completo de organizacao automatica de arquivos e documentos com deteccao inteligente, categorizacao por cores e interface HTML interativa.
 
 ## Visao Geral
