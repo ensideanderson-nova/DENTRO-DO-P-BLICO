@@ -259,6 +259,14 @@ Contribuicoes sao bem-vindas!
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
+## Integracao com Claude AI (GitHub Actions)
+
+Este repositorio usa GitHub Actions para integrar com o Claude AI. Para ativar:
+
+1. Obtenha uma API key em https://console.anthropic.com
+2. Configure o secret `ANTHROPIC_API_KEY` em Settings > Secrets > Actions
+3. Veja o guia completo: [docs/CONFIGURAR_CLAUDE_API.md](docs/CONFIGURAR_CLAUDE_API.md)
+
 ## Licenca
 
 Este projeto esta sob a licenca MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.

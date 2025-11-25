@@ -40,6 +40,23 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
+          # Verificar se a API key está configurada
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+            echo "⚠️ **Configuração necessária**" >> $GITHUB_ENV
+            echo "" >> $GITHUB_ENV
+            echo "O secret \`ANTHROPIC_API_KEY\` não está configurado neste repositório." >> $GITHUB_ENV
+            echo "" >> $GITHUB_ENV
+            echo "**Para configurar:**" >> $GITHUB_ENV
+            echo "1. Obtenha uma API key em https://console.anthropic.com" >> $GITHUB_ENV
+            echo "2. Vá em Settings > Secrets and variables > Actions" >> $GITHUB_ENV
+            echo "3. Adicione um novo secret chamado \`ANTHROPIC_API_KEY\`" >> $GITHUB_ENV
+            echo "" >> $GITHUB_ENV
+            echo "📖 Veja o guia completo: [CONFIGURAR_CLAUDE_API.md](docs/CONFIGURAR_CLAUDE_API.md)" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            exit 0
+          fi
+
           # Remove aspas extras do EVENT_BODY se existirem
           CLEAN_BODY=$(echo "$EVENT_BODY" | sed 's/^"//;s/"$//')
 

@@ -302,3 +302,16 @@ Após a instalação:
 Problemas na instalação?
 - Issues: https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/issues
 - Email: suporte@enside.com.br
+
+## Configuração do Claude AI (GitHub Actions)
+
+Para habilitar a integração automática do Claude AI nas Issues e Pull Requests:
+
+1. Obtenha uma API Key em https://console.anthropic.com
+2. Configure o secret `ANTHROPIC_API_KEY` no repositório
+3. Veja o guia completo: [CONFIGURAR_CLAUDE_API.md](CONFIGURAR_CLAUDE_API.md)
+
+### Erro "x-api-key header is required"
+
+Se você vir este erro nos comentários automáticos, significa que o secret não está configurado.
+Siga as instruções em [CONFIGURAR_CLAUDE_API.md](CONFIGURAR_CLAUDE_API.md) para resolver.
