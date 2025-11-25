@@ -1,290 +1,276 @@
-# Sistema ENSIDE - Organização Inteligente de Documentos
+# Sistema ENSIDE - Organizacao Inteligente de Documentos v2.0
 
-Sistema completo de organização automática de arquivos e documentos empresariais com detecção inteligente, categorização por cores e interface HTML interativa.
+Sistema completo de organizacao automatica de arquivos e documentos com deteccao inteligente, categorizacao por cores e interface HTML interativa.
 
-## Visão Geral
+## Visao Geral
 
-O Sistema ENSIDE organiza automaticamente seus documentos em 14 categorias principais, com detecção inteligente de conteúdo, aplicação de cores no Finder do macOS e visualização HTML interativa.
+O Sistema ENSIDE organiza automaticamente seus documentos em **15 categorias** principais, com deteccao inteligente de conteudo, aplicacao de cores no Finder do macOS e visualizacao HTML interativa.
 
-### Principais Características
+### Principais Caracteristicas
 
-- **733 pastas** estruturadas e organizadas
-- **14 categorias** principais com códigos de cores
-- **Detecção inteligente** de tipos de documento (PDFs, extratos bancários, notas fiscais, etc)
-- **6 bancos** organizados (Itaú, Bradesco, Santander, BB, Caixa, Nubank)
+- **15 categorias** principais com codigos de cores
+- **Deteccao inteligente** de tipos de documento (PDFs, extratos bancarios, notas fiscais, etc)
 - **Sistema de cores** no Finder do macOS
-- **HTML interativo** com filtros e busca em tempo real
-- **Integração com Claude Code** via skill personalizada
+- **Dashboard HTML** interativo com filtros e busca
+- **Triagem automatica** por palavras-chave
+- **Tags e etiquetas** para organizacao visual
+- **Integracao com Claude Code** via skill personalizada
 
-## Estrutura de Categorias
+## Estrutura de Categorias (15)
 
-| # | Categoria | Cor | Descrição |
-|---|-----------|-----|-----------|
-| 00 | TRIAGEM_POR_PESSOA | Roxo | Organização por CPF ou CNPJ |
-| 01 | DOCUMENTOS_PESSOAIS | Verde | RG, CPF, CNH, Certidões |
-| 02 | DOCUMENTOS_EMPRESA | Azul | CNPJ, Contratos, Alvarás |
-| 03 | MADEIRAS | Roxo | Fornecedores, Estoque, Certificados |
-| 04 | FRETES | Laranja | Motoristas, CTe, Cotações |
-| 05 | BANCOS | Vermelho | 6 Bancos com CPF/CNPJ separados |
-| 06 | FINANCEIRO | Amarelo | Contas, Impostos (12 meses) |
-| 07 | CLIENTES | Rosa | Cadastros, Contratos, Notas Fiscais |
-| 08 | FORNECEDORES | Cinza | Cadastros, Contratos, Pedidos |
-| 09 | SISTEMAS | Roxo | Código-fonte, Scripts, Projetos |
-| 10 | BACKUP | Cinza | Backups Diários/Semanais/Mensais |
-| 11 | VIDEOS | Vermelho | Tutoriais, Segurança, Reuniões |
-| 12 | PRINTS_TELA | Azul | Screenshots, Evidências |
-| 13 | SEGURANCA_FRAUDES | Vermelho | Fraudes, Cheques Suspeitos |
+| # | Categoria | Cor Finder | Tags | Descricao |
+|---|-----------|------------|------|-----------|
+| 01 | INBOX | Roxo | Pessoal, Urgente | Triagem de novos arquivos |
+| 02 | DOCUMENTOS_PESSOAIS | Azul | Pessoal, Sensivel | CPF, RG, CNH, Certidoes |
+| 03 | FINANCEIRO | Verde | Empresa, Sensivel | Bancos, Impostos, Investimentos |
+| 04 | JURIDICO | Vermelho | Empresa, Urgente | Contratos, Processos, CNPJ |
+| 05 | SAUDE | Cinza | Pessoal, Sensivel | Exames, Receitas, Planos |
+| 06 | IMOVEIS | Laranja | Pessoal, Sensivel | Escrituras, IPTU, Condominios |
+| 07 | VEICULOS | Roxo | Pessoal | CRLV, Multas, Seguros |
+| 08 | EDUCACAO | Azul | Pessoal | Diplomas, Certificados, Cursos |
+| 09 | TRABALHO | Laranja | Pessoal, Empresa | Curriculos, Holerites, CTPS |
+| 10 | PROJETOS | Roxo | Empresa, Tecnico | Desenvolvimento, Sistemas |
+| 11 | MIDIA | Amarelo | Pessoal | Fotos, Videos, Musicas |
+| 12 | COMUNICACAO | Verde | Empresa | Emails, Mensagens, Contatos |
+| 13 | COMPRAS | Cinza | Pessoal, Empresa | Notas Fiscais, Garantias |
+| 14 | SEGURANCA | Cinza | Sensivel, Tecnico | Certificados, Chaves, Senhas |
+| 15 | BACKUP | Cinza | Tecnico | Backups, Arquivos Antigos |
 
-## Instalação Rápida
+## Instalacao Rapida
 
 ```bash
-# Clonar o repositório
+# Clonar o repositorio
 git clone https://github.com/ensideanderson-nova/ENSIDE-PUBLICO.git
 
-# Executar instalação
+# Entrar no diretorio
 cd ENSIDE-PUBLICO
+
+# Executar instalacao
 bash install.sh
+
+# Criar estrutura de pastas
+python3 scripts/triagem_universal.py --criar-estrutura
+
+# Aplicar cores no Finder (macOS)
+bash scripts/aplicar_cores_finder.sh
 ```
 
 ## Como Usar
 
-### Opção 1: Linha de Comando
+### Opcao 1: Dashboard HTML
+
+Abra o arquivo `DASHBOARD.html` no navegador para visualizar e navegar pelas categorias:
+
+```bash
+open DASHBOARD.html
+```
+
+### Opcao 2: Linha de Comando
 
 ```bash
 # Organizar pasta Downloads
-python3 ~/.claude/skills/organize-pdfs/importador_universal.py ~/Downloads
+python3 scripts/triagem_universal.py ~/Downloads
 
-# Organizar arquivo específico
-python3 ~/.claude/skills/organize-pdfs/importador_universal.py ~/Desktop/documento.pdf
+# Organizar arquivo especifico
+python3 scripts/triagem_universal.py ~/Desktop/documento.pdf
 
-# Modo simulação (não move arquivos)
-python3 ~/.claude/skills/organize-pdfs/importador_universal.py ~/Downloads --dry-run
+# Modo simulacao (nao move arquivos)
+python3 scripts/triagem_universal.py ~/Downloads --dry-run
+
+# Criar estrutura de pastas
+python3 scripts/triagem_universal.py --criar-estrutura
 ```
 
-### Opção 2: Claude Code (Recomendado)
+### Opcao 3: Claude Code (Recomendado)
 
-Simplesmente peça ao Claude:
+Simplesmente peca ao Claude:
 - "Organiza os arquivos da pasta Downloads"
 - "Importa esta pasta para o sistema"
 - "Classifica estes documentos"
 
-### Opção 3: Atalho Desktop
-
-1. Clique 2x em `IMPORTAR_AQUI.command` no Desktop
-2. Arraste arquivos ou pastas
-3. Sistema organiza automaticamente
-
-## Detecção Inteligente
+## Deteccao Inteligente
 
 O sistema reconhece automaticamente:
 
-### Documentos Bancários
-- Extratos bancários → `05_BANCOS/[Banco]/Extratos/`
-- Comprovantes → `05_BANCOS/[Banco]/Comprovantes/`
-- Detecta 6 bancos principais automaticamente
+### Documentos Pessoais
+- CPF, RG, CNH -> `02_DOCUMENTOS_PESSOAIS/`
+- Certidoes -> `02_DOCUMENTOS_PESSOAIS/Certidoes/`
+- Comprovantes de residencia -> `02_DOCUMENTOS_PESSOAIS/Comprovantes/`
 
-### Documentos Fiscais
-- Notas Fiscais → `07_CLIENTES/` ou `08_FORNECEDORES/`
-- Boletos → `06_FINANCEIRO/Contas_Pagar/`
-- Contratos → `02_DOCUMENTOS_EMPRESA/Contratos/`
+### Financeiro
+- Extratos bancarios -> `03_FINANCEIRO/Bancos/`
+- Impostos (IRPF, DARF) -> `03_FINANCEIRO/Impostos/`
+- Boletos -> `03_FINANCEIRO/Boletos/`
+- Investimentos -> `03_FINANCEIRO/Investimentos/`
 
-### Segurança e Fraudes
-Palavras-chave detectadas:
-- fraude, fraud, golpe, scam
-- phishing, malware, virus
-- cheque suspeito, tentativa invasão
+### Juridico
+- Contratos -> `04_JURIDICO/Contratos/`
+- CNPJ, Contrato Social -> `04_JURIDICO/CNPJ/`
+- Processos -> `04_JURIDICO/Processos/`
 
-Destino: `13_SEGURANCA_FRAUDES/`
+### Saude
+- Exames -> `05_SAUDE/Exames/`
+- Receitas medicas -> `05_SAUDE/Receitas/`
+- Vacinas -> `05_SAUDE/Vacinas/`
 
-### Mídia
-- Vídeos (.mp4, .mov, .avi) → `11_VIDEOS/`
-- Prints (.png, .jpg com "screen") → `12_PRINTS_TELA/`
-- Documentação e evidências separadas
+### Midia
+- Fotos (.jpg, .png) -> `11_MIDIA/Fotos/`
+- Videos (.mp4, .mov) -> `11_MIDIA/Videos/`
+- Screenshots -> `11_MIDIA/Screenshots/`
 
-### Código-fonte
-- Python (.py) → `WORKSPACE/Python/`
-- HTML/CSS/JS → `WORKSPACE/HTML/`
-- Scripts (.sh) → `WORKSPACE/Scripts/`
+### Seguranca
+- Certificados digitais -> `14_SEGURANCA/Certificados_Digitais/`
+- Chaves SSH -> `14_SEGURANCA/Chaves_SSH/`
 
-## Visualização HTML
+## Dashboard HTML
 
-Gere um mapa visual completo do sistema:
+O arquivo `DASHBOARD.html` oferece:
+
+- **15 categorias** com cores e icones
+- **Busca em tempo real** por nome de arquivo
+- **Filtros por tags**: Todas, Pessoal, Empresa, Urgente, Sensivel, Tecnico
+- **Visualizacao em grade ou lista**
+- **Subcategorias expansiveis** em cada card
+- **Modal de importacao** de arquivos
+- **Estatisticas** do sistema
+
+### Abrindo o Dashboard
 
 ```bash
-python3 ~/.claude/skills/organize-pdfs/gerar_html_completo.py
+# macOS
+open DASHBOARD.html
+
+# Linux
+xdg-open DASHBOARD.html
+
+# Windows
+start DASHBOARD.html
 ```
 
-### Funcionalidades do HTML
-- Mapa visual de toda estrutura
-- Cores correspondentes ao Finder
-- 11 botões de filtro por categoria
-- Busca em tempo real
-- Estatísticas do sistema
-- Links diretos para pastas
+## Sistema de Cores no Finder
 
-Arquivo gerado: `~/Desktop/SISTEMA_ENSIDE_COMPLETO.html`
-
-## Sistema de Cores
-
-Aplicar cores no Finder do macOS:
+Aplique cores nas pastas do macOS:
 
 ```bash
-bash ~/.claude/skills/organize-pdfs/aplicar_cores_completo.sh
+bash scripts/aplicar_cores_finder.sh
 ```
 
 ### Paleta de Cores
-- Roxo: Triagem, Madeiras, Sistemas
-- Verde: Documentos Pessoais (CPF)
-- Azul: Documentos Empresa (CNPJ), Prints
-- Vermelho: Bancos, Vídeos, Segurança
-- Laranja: Fretes
-- Amarelo: Financeiro
-- Rosa: Clientes
-- Cinza: Fornecedores, Backup
+| Cor | Codigo | Categorias |
+|-----|--------|------------|
+| Roxo | 3 | INBOX, Veiculos, Projetos |
+| Azul | 4 | Documentos Pessoais, Educacao |
+| Verde | 2 | Financeiro, Comunicacao |
+| Vermelho | 6 | Juridico |
+| Laranja | 7 | Imoveis, Trabalho |
+| Amarelo | 5 | Midia |
+| Cinza | 1 | Saude, Compras, Seguranca, Backup |
 
-## Scripts Disponíveis
+## Scripts Disponiveis
 
-### Organização
+### Organizacao
 ```bash
-# Recriar sistema completo
-bash ~/.claude/skills/organize-pdfs/organize_master.sh
+# Triagem universal (recomendado)
+python3 scripts/triagem_universal.py [PASTA]
 
-# Organizar HOME completa
-bash ~/.claude/skills/organize-pdfs/organizar_home_completo.sh
+# Criar estrutura
+python3 scripts/triagem_universal.py --criar-estrutura
 
-# Criar novas categorias
-bash ~/.claude/skills/organize-pdfs/criar_categorias_novas.sh
+# Importador universal (legado)
+python3 scripts/importador_universal.py [PASTA]
 ```
 
-### Importação
+### Cores
 ```bash
-# Importador universal (recomendado)
-python3 ~/.claude/skills/organize-pdfs/importador_universal.py [PASTA]
+# Aplicar cores Finder
+bash scripts/aplicar_cores_finder.sh
 
-# Organizador geral
-python3 ~/.claude/skills/organize-pdfs/general_organizer.py [PASTA]
-
-# Processador específico de PDFs
-python3 ~/.claude/skills/organize-pdfs/pdf_processor.py [ARQUIVO]
+# Cores completas (legado)
+bash scripts/aplicar_cores_completo.sh
 ```
 
-### Visualização
+### Visualizacao
 ```bash
-# HTML completo com cores
-python3 ~/.claude/skills/organize-pdfs/gerar_html_completo.py
-
-# HTML simples
-python3 ~/.claude/skills/organize-pdfs/gerar_html_cores.py
+# Abrir dashboard
+open DASHBOARD.html
 ```
 
 ## Estrutura de Arquivos
 
 ```
-/Users/Shared/ENSIDE_ORGANIZADO/     # Sistema principal
-~/WORKSPACE/                          # Arquivos pessoais
-~/.claude/skills/organize-pdfs/       # Scripts e skill
-~/Desktop/SISTEMA_ENSIDE_COMPLETO.html # Visualização HTML
+ENSIDE-PUBLICO/
+├── DASHBOARD.html          # Interface web
+├── CLAUDE.md               # Guia para AI
+├── README.md               # Este arquivo
+├── install.sh              # Instalador
+├── scripts/
+│   ├── triagem_universal.py      # Organizador principal
+│   ├── aplicar_cores_finder.sh   # Cores macOS
+│   ├── importador_universal.py   # Importador (legado)
+│   └── ...
+├── docs/
+│   ├── INSTALLATION.md
+│   └── EXEMPLOS.md
+└── .github/
+    └── workflows/          # CI/CD
 ```
 
-## Exemplo: Estrutura de Bancos
+## Estrutura de Destino
 
 ```
-05_BANCOS/
-├── Itau/
-│   ├── CPF/                         # Verde
-│   │   ├── Conta_Corrente/
-│   │   ├── Extratos/2025/
-│   │   ├── Cartoes/
-│   │   └── Comprovantes/
-│   └── CNPJ/                        # Azul
-│       ├── Conta_Corrente/
-│       ├── Extratos/2025/
-│       └── Comprovantes/
-├── Bradesco/
-├── Santander/
-├── Banco_do_Brasil/
-├── Caixa/
-└── Nubank/
+/Users/Shared/ENSIDE_ORGANIZADO/
+├── 01_INBOX/
+│   ├── Para_Classificar/
+│   ├── Downloads/
+│   └── Emails/
+├── 02_DOCUMENTOS_PESSOAIS/
+│   ├── CPF/
+│   ├── RG/
+│   ├── CNH/
+│   └── ...
+├── 03_FINANCEIRO/
+│   ├── Bancos/
+│   ├── Impostos/
+│   └── ...
+...
+└── 15_BACKUP/
+    ├── Diario/
+    ├── Semanal/
+    └── Mensal/
 ```
 
 ## Requisitos
 
-- macOS 10.15 ou superior
+- macOS 10.15+ (ou Linux/Windows para scripts Python)
 - Python 3.8+
-- Claude Code (opcional, mas recomendado)
-- Bibliotecas Python: PyPDF2, python-magic-bin
+- Navegador moderno (para Dashboard)
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
-## Documentação Completa
-
-- [Guia de Instalação](docs/INSTALLATION.md)
-- [Guia Completo de Uso](docs/GUIA_COMPLETO.md)
-- [Exemplos e Casos de Uso](docs/EXEMPLOS.md)
-- [Desenvolvimento e Customização](docs/DEVELOPMENT.md)
-- [FAQ](docs/FAQ.md)
-
-## Estatísticas
-
-- 733 pastas criadas automaticamente
-- 14 categorias principais
-- 6 bancos com CPF/CNPJ separados
-- 12 meses organizados (Financeiro 2025)
-- 3 níveis de backup (Diário/Semanal/Mensal)
-
-## Integração com Claude Code
-
-O sistema inclui uma skill personalizada para Claude Code que permite organização automática através de comandos naturais.
-
-### Ativação
-A skill é ativada automaticamente quando você pede ao Claude para organizar arquivos.
-
-### Comandos Exemplo
-- "Organiza a pasta Downloads"
-- "Classifica os documentos do Desktop"
-- "Importa estes arquivos para o sistema"
-
 ## Contribuindo
 
-Contribuições são bem-vindas! Por favor:
+Contribuicoes sao bem-vindas!
 
 1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudancas (`git commit -m 'Adiciona nova funcionalidade'`)
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-## Licença
+## Licenca
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto esta sob a licenca MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Suporte
-
-- Issues: https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/issues
-- Email: suporte@enside.com.br
-- Documentação: https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/wiki
-
-## Roadmap
-
-- [ ] Suporte para Windows e Linux
-- [ ] Interface gráfica nativa
-- [ ] OCR automático em PDFs
-- [ ] Integração com serviços de nuvem
-- [ ] App mobile para visualização
-- [ ] API REST para integração
-
-## Créditos
+## Creditos
 
 Desenvolvido por Anderson Enside
 Powered by Claude AI (Anthropic)
 
 ---
 
-**Sistema pronto para uso!**
-
-Comece organizando sua pasta Downloads:
+**Comece agora:**
 ```bash
-python3 ~/.claude/skills/organize-pdfs/importador_universal.py ~/Downloads
+python3 scripts/triagem_universal.py ~/Downloads --dry-run
 ```

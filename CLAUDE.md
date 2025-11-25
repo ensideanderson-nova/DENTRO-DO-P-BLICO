@@ -1,251 +1,254 @@
 # CLAUDE.md - Guia para Assistentes de IA
 
-Este documento fornece orientações para assistentes de IA (como Claude) que trabalham com o repositório **Sistema ENSIDE**.
+Este documento fornece orientacoes para assistentes de IA (como Claude) que trabalham com o repositorio **Sistema ENSIDE v2.0**.
 
-## Visão Geral do Projeto
+## Visao Geral do Projeto
 
-O **Sistema ENSIDE** é um sistema de organização inteligente de documentos desenvolvido para macOS. Ele organiza automaticamente arquivos e documentos empresariais em uma estrutura hierárquica de 14 categorias, com:
+O **Sistema ENSIDE** e um sistema de organizacao inteligente de documentos. Ele organiza automaticamente arquivos e documentos em uma estrutura hierarquica de **15 categorias**, com:
 
-- **733+ pastas** estruturadas automaticamente
-- **Detecção inteligente** de tipos de documento (PDFs, extratos bancários, notas fiscais, etc.)
+- **Deteccao inteligente** de tipos de documento (PDFs, extratos bancarios, notas fiscais, etc.)
 - **Sistema de cores** integrado com o Finder do macOS
-- **Visualização HTML** interativa com filtros e busca
+- **Dashboard HTML** interativo com filtros e busca
+- **Tags e etiquetas** para organizacao visual
 - **Skill para Claude Code** para comandos de linguagem natural
 
-### Propósito Principal
-Automatizar a organização de documentos empresariais brasileiros, incluindo:
-- Extratos bancários (6 bancos principais)
-- Notas fiscais e documentos fiscais
-- Contratos e documentos de clientes/fornecedores
-- Documentos de segurança e fraudes
-- Código-fonte e projetos
+### Proposito Principal
+Automatizar a organizacao de documentos pessoais e empresariais, incluindo:
+- Documentos pessoais (CPF, RG, CNH)
+- Financeiro (bancos, impostos, investimentos)
+- Juridico (contratos, processos, CNPJ)
+- Saude (exames, receitas, vacinas)
+- Midia (fotos, videos, musicas)
+- E muito mais...
 
-## Estrutura do Repositório
+## Estrutura do Repositorio
 
 ```
 ENSIDE-PUBLICO/
-├── README.md                 # Documentação principal
-├── CHANGELOG.md              # Histórico de versões
-├── LICENSE                   # Licença MIT
-├── install.sh                # Script de instalação automatizada
-├── requirements.txt          # Dependências Python (PyPDF2, python-magic-bin)
-├── .gitignore                # Arquivos ignorados pelo Git
+├── DASHBOARD.html            # Interface web interativa (15 categorias)
+├── CLAUDE.md                 # Este arquivo - guia para AI
+├── README.md                 # Documentacao principal
+├── CHANGELOG.md              # Historico de versoes
+├── LICENSE                   # Licenca MIT
+├── install.sh                # Script de instalacao
+├── requirements.txt          # Dependencias Python
 │
-├── docs/                     # Documentação adicional
-│   ├── INSTALLATION.md       # Guia detalhado de instalação
-│   └── EXEMPLOS.md           # Casos de uso e exemplos
+├── docs/                     # Documentacao adicional
+│   ├── INSTALLATION.md       # Guia de instalacao
+│   └── EXEMPLOS.md           # Casos de uso
 │
-├── scripts/                  # Scripts principais do sistema
-│   ├── importador_universal.py    # Importador principal (Python)
-│   ├── organize_master.sh         # Criador da estrutura completa
-│   ├── aplicar_cores_completo.sh  # Aplicador de cores no Finder
-│   ├── gerar_html_completo.py     # Gerador de HTML interativo
-│   ├── gerar_html_cores.py        # Gerador HTML simples
-│   ├── file_organizer.py          # Organizador de arquivos
-│   ├── general_organizer.py       # Organizador geral
-│   ├── pdf_processor.py           # Processador específico de PDFs
-│   ├── organizar_home_completo.sh # Organizador da HOME
-│   ├── criar_categorias_novas.sh  # Criador de novas categorias
-│   └── mover_arquivos_para_sistema.sh # Movimentador de arquivos
+├── scripts/                  # Scripts principais
+│   ├── triagem_universal.py       # Organizador principal (15 categorias)
+│   ├── aplicar_cores_finder.sh    # Aplicador de cores no Finder
+│   ├── importador_universal.py    # Importador (legado)
+│   ├── organize_master.sh         # Criador da estrutura
+│   ├── gerar_html_completo.py     # Gerador de HTML
+│   └── ...
 │
 └── .github/workflows/        # GitHub Actions
-    ├── claude.yml            # Integração Claude Code Action
-    ├── claude-integration.yml # Análise automática de issues/PRs
-    └── claude-code-review.yml # Code review automatizado
+    ├── claude.yml            # Integracao Claude
+    └── ...
 ```
 
-## Estrutura de Categorias do Sistema
+## Estrutura de Categorias (15)
 
-O sistema organiza documentos em 14 categorias principais:
+O sistema organiza documentos em **15 categorias** principais:
 
-| # | Categoria | Cor Finder | Descrição |
-|---|-----------|------------|-----------|
-| 00 | TRIAGEM_POR_PESSOA | Roxo | Organização por CPF ou CNPJ |
-| 01 | DOCUMENTOS_PESSOAIS | Verde | RG, CPF, CNH, Certidões |
-| 02 | DOCUMENTOS_EMPRESA | Azul | CNPJ, Contratos, Alvarás |
-| 03 | MADEIRAS | Roxo | Fornecedores, Estoque, Certificados |
-| 04 | FRETES | Laranja | Motoristas, CTe, Cotações |
-| 05 | BANCOS | Vermelho | 6 Bancos (Itaú, Bradesco, Santander, BB, Caixa, Nubank) |
-| 06 | FINANCEIRO | Amarelo | Contas, Impostos (12 meses organizados) |
-| 07 | CLIENTES | Rosa | Cadastros, Contratos, Notas Fiscais |
-| 08 | FORNECEDORES | Cinza | Cadastros, Contratos, Pedidos |
-| 09 | SISTEMAS | Roxo | Código-fonte, Scripts, Projetos |
-| 10 | BACKUP | Cinza | Backups Diários/Semanais/Mensais |
-| 11 | VIDEOS | Vermelho | Tutoriais, Segurança, Reuniões |
-| 12 | PRINTS_TELA | Azul | Screenshots, Evidências |
-| 13 | SEGURANCA_FRAUDES | Vermelho | Fraudes, Cheques Suspeitos |
+| # | Categoria | Cor Finder | Tags | Descricao |
+|---|-----------|------------|------|-----------|
+| 01 | INBOX | Roxo (3) | Pessoal, Urgente | Triagem de novos arquivos |
+| 02 | DOCUMENTOS_PESSOAIS | Azul (4) | Pessoal, Sensivel | CPF, RG, CNH, Certidoes |
+| 03 | FINANCEIRO | Verde (2) | Empresa, Sensivel | Bancos, Impostos, Investimentos |
+| 04 | JURIDICO | Vermelho (6) | Empresa, Urgente | Contratos, Processos, CNPJ |
+| 05 | SAUDE | Cinza (1) | Pessoal, Sensivel | Exames, Receitas, Planos |
+| 06 | IMOVEIS | Laranja (7) | Pessoal, Sensivel | Escrituras, IPTU, Condominios |
+| 07 | VEICULOS | Roxo (3) | Pessoal | CRLV, Multas, Seguros |
+| 08 | EDUCACAO | Azul (4) | Pessoal | Diplomas, Certificados, Cursos |
+| 09 | TRABALHO | Laranja (7) | Pessoal, Empresa | Curriculos, Holerites, CTPS |
+| 10 | PROJETOS | Roxo (3) | Empresa, Tecnico | Desenvolvimento, Sistemas |
+| 11 | MIDIA | Amarelo (5) | Pessoal | Fotos, Videos, Musicas |
+| 12 | COMUNICACAO | Verde (2) | Empresa | Emails, Mensagens, Contatos |
+| 13 | COMPRAS | Cinza (1) | Pessoal, Empresa | Notas Fiscais, Garantias |
+| 14 | SEGURANCA | Cinza (1) | Sensivel, Tecnico | Certificados, Chaves, Senhas |
+| 15 | BACKUP | Cinza (1) | Tecnico | Backups, Arquivos Antigos |
+
+### Subcategorias por Categoria
+
+Cada categoria tem subcategorias especificas:
+
+```
+01_INBOX/
+├── Para_Classificar/
+├── Downloads/
+└── Emails/
+
+02_DOCUMENTOS_PESSOAIS/
+├── CPF/
+├── RG/
+├── CNH/
+├── Certidoes/
+├── Comprovantes/
+├── Titulo_Eleitor/
+└── Passaporte/
+
+03_FINANCEIRO/
+├── Bancos/
+├── Impostos/
+├── Investimentos/
+├── Contas_Pagar/
+├── Contas_Receber/
+├── Extratos/
+└── Boletos/
+
+... (cada categoria segue padrao similar)
+```
 
 ## Scripts Principais
 
-### `importador_universal.py`
-Script principal para importação e classificação de arquivos.
+### `triagem_universal.py` (RECOMENDADO)
+Script principal para organizacao com 15 categorias.
 
 **Uso:**
 ```bash
-# Importar pasta inteira
-python3 scripts/importador_universal.py ~/Downloads
+# Organizar pasta
+python3 scripts/triagem_universal.py ~/Downloads
 
-# Importar arquivo específico
-python3 scripts/importador_universal.py ~/Desktop/documento.pdf
+# Modo simulacao
+python3 scripts/triagem_universal.py ~/Downloads --dry-run
 
-# Modo simulação (dry-run)
-python3 scripts/importador_universal.py ~/Downloads --dry-run
+# Criar estrutura de pastas
+python3 scripts/triagem_universal.py --criar-estrutura
 ```
 
+### `aplicar_cores_finder.sh`
+Aplica cores nas pastas do Finder (macOS).
+
+**Uso:**
+```bash
+bash scripts/aplicar_cores_finder.sh
+```
+
+### `DASHBOARD.html`
+Interface web interativa para visualizar e navegar nas categorias.
+
 **Funcionalidades:**
-- Detecção automática de tipo por extensão e conteúdo
-- Leitura de PDFs para classificação inteligente
-- Reconhecimento de bancos, notas fiscais, contratos
-- Identificação de documentos de segurança/fraude
-
-### `organize_master.sh`
-Cria a estrutura completa de pastas em `/Users/Shared/ENSIDE_ORGANIZADO/`.
-
-### `gerar_html_completo.py`
-Gera visualização HTML interativa com todas as pastas e filtros.
-
-### `aplicar_cores_completo.sh`
-Aplica cores/etiquetas nas pastas do Finder (requer `brew install tag`).
+- 15 categorias com cores e icones
+- Busca em tempo real
+- Filtros por tags (Pessoal, Empresa, Urgente, Sensivel, Tecnico)
+- Visualizacao em grade ou lista
+- Subcategorias expansiveis
+- Modal de importacao
 
 ## Caminhos Importantes
 
 ```bash
-# Sistema principal (instalação)
+# Sistema principal
 /Users/Shared/ENSIDE_ORGANIZADO/
 
-# Workspace pessoal
-~/WORKSPACE/
-
-# Skill do Claude Code
-~/.claude/skills/organize-pdfs/
-
-# Visualização HTML
-~/Desktop/SISTEMA_ENSIDE_COMPLETO.html
+# Categorias
+/Users/Shared/ENSIDE_ORGANIZADO/01_INBOX/
+/Users/Shared/ENSIDE_ORGANIZADO/02_DOCUMENTOS_PESSOAIS/
+... (ate 15_BACKUP/)
 ```
 
-## Dependências
+## Dependencias
 
 ### Sistema
-- **macOS** 10.15 (Catalina) ou superior
+- **macOS** 10.15+ ou Linux/Windows
 - **Python** 3.8+
-- **tag** (opcional, para cores no Finder): `brew install tag`
+- Navegador moderno (para Dashboard)
 
 ### Python
 ```
-PyPDF2>=3.0.0          # Leitura de PDFs
-python-magic-bin>=0.4.14  # Detecção de tipos de arquivo
+PyPDF2>=3.0.0
 ```
 
-## Fluxo de Desenvolvimento
+## Convencoes para Assistentes de IA
 
-### Instalação
-```bash
-git clone https://github.com/ensideanderson-nova/ENSIDE-PUBLICO.git
-cd ENSIDE-PUBLICO
-bash install.sh
-```
+### Ao Trabalhar com Este Repositorio
 
-### Testando Alterações
-```bash
-# Testar importador em modo dry-run
-python3 scripts/importador_universal.py ~/Downloads --dry-run
+1. **Idioma**: O projeto e em portugues brasileiro. Mantenha mensagens e documentacao em portugues.
 
-# Regenerar HTML
-python3 scripts/gerar_html_completo.py
-```
+2. **Organizacao de Arquivos**:
+   - Scripts Python vao em `scripts/`
+   - Documentacao em `docs/`
+   - Interface web e `DASHBOARD.html` na raiz
 
-## GitHub Actions
+3. **Ao Modificar Scripts**:
+   - O `triagem_universal.py` e o script principal
+   - Teste com `--dry-run` antes de aplicar mudancas
+   - As 15 categorias estao definidas no dicionario `CATEGORIAS`
+   - As regras de palavras-chave estao em `PALAVRAS_CHAVE`
 
-### `claude.yml`
-Integração com Claude Code Action. Ativado quando:
-- Menção de `@claude` em issues ou comentários
-- Menção em PRs ou reviews
+4. **Sistema de Cores**:
+   - Cores do Finder: 0=None, 1=Gray, 2=Green, 3=Purple, 4=Blue, 5=Yellow, 6=Red, 7=Orange
+   - Configuracoes em `aplicar_cores_finder.sh`
 
-### `claude-integration.yml`
-Análise automática de issues e PRs usando Claude AI.
-
-## Convenções para Assistentes de IA
-
-### Ao Trabalhar com Este Repositório
-
-1. **Idioma**: O projeto é em português brasileiro. Mantenha mensagens, comentários e documentação em português.
-
-2. **Organização de Arquivos**:
-   - Scripts Python vão em `scripts/`
-   - Documentação em `docs/`
-   - Workflows em `.github/workflows/`
-
-3. **Estilo de Código**:
-   - Python: Use docstrings em português
-   - Bash: Comente seções principais
-   - Mantenha compatibilidade com macOS
-
-4. **Ao Modificar Scripts**:
-   - O `importador_universal.py` é o script principal - mudanças aqui afetam toda a classificação
-   - Teste com `--dry-run` antes de aplicar mudanças reais
-   - Os caminhos BASE e WORKSPACE são configurados no início dos scripts
-
-5. **Detecção de Documentos**:
-   - Palavras-chave para detecção estão em `PALAVRAS_CHAVE` no `importador_universal.py`
-   - Mapeamento de extensões em `EXTENSOES`
-   - Para adicionar novos tipos, modifique ambos os dicionários
-
-6. **Sistema de Cores**:
-   - Cores são aplicadas via utilitário `tag` do macOS
-   - Configurações em `aplicar_cores_completo.sh`
-
-### Comandos Úteis para Contexto
+### Comandos Uteis
 
 ```bash
-# Ver estrutura de categorias
-ls /Users/Shared/ENSIDE_ORGANIZADO/
+# Ver Dashboard
+open DASHBOARD.html
 
-# Contar pastas no sistema
-find /Users/Shared/ENSIDE_ORGANIZADO -type d | wc -l
+# Organizar arquivos (simulacao)
+python3 scripts/triagem_universal.py ~/Downloads --dry-run
 
-# Ver logs de importação
-python3 scripts/importador_universal.py ~/Downloads 2>&1 | tee log.txt
+# Criar estrutura
+python3 scripts/triagem_universal.py --criar-estrutura
 
-# Verificar skill do Claude Code
-ls ~/.claude/skills/organize-pdfs/
+# Aplicar cores (macOS)
+bash scripts/aplicar_cores_finder.sh
 ```
 
-### Ao Responder Usuários
+### Ao Responder Usuarios
 
-1. **Para organizar arquivos**: Use `importador_universal.py`
-2. **Para criar estrutura**: Use `organize_master.sh`
-3. **Para visualizar sistema**: Use `gerar_html_completo.py`
-4. **Para aplicar cores**: Use `aplicar_cores_completo.sh`
+1. **Para organizar arquivos**: Use `triagem_universal.py`
+2. **Para visualizar sistema**: Abra `DASHBOARD.html`
+3. **Para aplicar cores**: Use `aplicar_cores_finder.sh`
+4. **Para criar estrutura**: Use `--criar-estrutura`
 
-## Palavras-Chave de Detecção
+## Palavras-Chave de Deteccao
 
 O sistema detecta automaticamente os seguintes tipos:
 
-### Bancário
-`extrato`, `saldo`, `banco`, `itau`, `bradesco`, `santander`, `bb`, `caixa`, `nubank`
-
-### Comprovantes
-`comprovante`, `pix`, `ted`, `doc`, `transferencia`
-
-### Documentos Fiscais
-`nota fiscal`, `nf-e`, `nfe`, `danfe`, `boleto`
-
-### Segurança
-`fraude`, `golpe`, `suspeito`, `hack`, `exploit`, `malware`
-
 ### Documentos Pessoais
-`cpf`, `rg`, `cnh`, `certidao`, `contrato`
+`cpf`, `rg`, `cnh`, `certidao`, `nascimento`, `casamento`, `comprovante residencia`
 
-## Licença
+### Financeiro
+`extrato`, `banco`, `itau`, `bradesco`, `santander`, `nubank`, `imposto`, `irpf`, `boleto`
+
+### Juridico
+`contrato`, `processo`, `procuracao`, `cnpj`, `contrato social`
+
+### Saude
+`exame`, `receita`, `vacina`, `plano saude`, `unimed`
+
+### Veiculos
+`crlv`, `ipva`, `multa`, `seguro auto`, `renavam`
+
+### Educacao
+`diploma`, `certificado`, `curso`, `historico escolar`
+
+### Trabalho
+`curriculo`, `holerite`, `ctps`, `inss`, `fgts`
+
+### Compras
+`nota fiscal`, `garantia`, `manual`
+
+### Seguranca
+`certificado digital`, `ssh`, `password`, `2fa`
+
+## Licenca
 
 MIT License - Copyright (c) 2025 Anderson Enside
 
 ## Recursos Adicionais
 
+- **Dashboard**: `DASHBOARD.html`
 - **Issues**: https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/issues
-- **Documentação**: Ver `docs/` no repositório
-- **Changelog**: Ver `CHANGELOG.md`
+- **Documentacao**: Ver `docs/` no repositorio
 
 ---
 
-*Última atualização: 2025-11-25*
+*Ultima atualizacao: 2025-11-25*
+*Versao: 2.0*
