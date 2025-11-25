@@ -32,6 +32,7 @@ jobs:
           fetch-depth: 1
 
       - name: Run Claude Code Review
+        if: ${{ secrets.ANTHROPIC_API_KEY != '' || secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
@@ -54,4 +55,9 @@ jobs:
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://docs.claude.com/en/docs/claude-code/cli-reference for available options
           claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
+
+      - name: Notificar chave ausente
+        if: ${{ secrets.ANTHROPIC_API_KEY == '' && secrets.CLAUDE_CODE_OAUTH_TOKEN == '' }}
+        run: |
+          echo "⚠️ Nenhuma ANTHROPIC_API_KEY nem CLAUDE_CODE_OAUTH_TOKEN definida. Pulando a execução do Claude Code Review."
 
