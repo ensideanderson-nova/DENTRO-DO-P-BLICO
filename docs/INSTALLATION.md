@@ -3,8 +3,8 @@
 ## Requisitos do Sistema
 
 ### Sistema Operacional
-- macOS 10.15 (Catalina) ou superior
-- Acesso de administrador (sudo)
+- macOS 10.15 (Catalina) ou superior, Linux ou Windows com WSL
+- Permissões de escrita no diretório home
 
 ### Software Necessário
 - Python 3.8 ou superior
@@ -96,11 +96,8 @@ Se preferir instalar manualmente:
 ### 1. Criar Estrutura Principal
 
 ```bash
-# Criar diretório principal
-sudo mkdir -p ~/ENSIDE_ORGANIZADO
-
-# Ajustar permissões
-sudo chown -R $USER:staff ~/ENSIDE_ORGANIZADO
+# Criar diretório principal (não precisa de sudo no home)
+mkdir -p ~/ENSIDE_ORGANIZADO
 
 # Executar script de criação
 bash scripts/organize_master.sh
@@ -190,8 +187,7 @@ O Claude deve ativar a skill automaticamente.
 ### Erro: Permissão Negada
 
 ```bash
-# Ajustar permissões
-sudo chown -R $USER:staff ~/ENSIDE_ORGANIZADO
+# Ajustar permissões (no diretório home não precisa de sudo)
 chmod -R 755 ~/ENSIDE_ORGANIZADO
 ```
 
@@ -268,7 +264,7 @@ chmod +x ~/.claude/skills/organize-pdfs/*.{py,sh}
 
 ```bash
 # Remover estrutura principal (CUIDADO: apaga todos os documentos!)
-sudo rm -rf ~/ENSIDE_ORGANIZADO
+rm -rf ~/ENSIDE_ORGANIZADO
 
 # Remover skill
 rm -rf ~/.claude/skills/organize-pdfs
