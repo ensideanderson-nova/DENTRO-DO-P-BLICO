@@ -79,24 +79,41 @@ jobs:
           echo "Status HTTP: $HTTP_CODE"
 
           if [ "$HTTP_CODE" != "200" ]; then
-            ERROR_MSG=$(echo "$BODY" | jq -r '.error.message // .error.type // "Erro desconhecido na API"')
-            ERROR_TYPE=$(echo "$BODY" | jq -r '.error.type // "unknown"')
+            ERROR_TYPE=$(echo "$BODY" | jq -r '.error.type // empty')
+            ERROR_MSG=$(echo "$BODY" | jq -r '.error.message // empty')
+            
+            # Construir mensagem de erro clara
+            if [ -n "$ERROR_TYPE" ] && [ -n "$ERROR_MSG" ]; then
+              FULL_ERROR="Tipo: $ERROR_TYPE - $ERROR_MSG"
+            elif [ -n "$ERROR_MSG" ]; then
+              FULL_ERROR="$ERROR_MSG"
+            elif [ -n "$ERROR_TYPE" ]; then
+              FULL_ERROR="Tipo: $ERROR_TYPE"
+            else
+              FULL_ERROR="Erro desconhecido na API"
+            fi
+            
             echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
-            echo "❌ Erro na API (HTTP $HTTP_CODE - $ERROR_TYPE): $ERROR_MSG" >> $GITHUB_ENV
+            echo "❌ Erro na API (HTTP $HTTP_CODE): $FULL_ERROR" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
           else
             # Verificar se a resposta tem a estrutura esperada
-            CONTENT_TYPE=$(echo "$BODY" | jq -r '.content[0].type // "unknown"')
+            CONTENT_TYPE=$(echo "$BODY" | jq -r '.content[0].type // empty')
             if [ "$CONTENT_TYPE" = "text" ]; then
               TEXT_CONTENT=$(echo "$BODY" | jq -r '.content[0].text')
               echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
               echo "$TEXT_CONTENT" >> $GITHUB_ENV
               echo "EOF" >> $GITHUB_ENV
             else
-              # Tentar extrair qualquer texto disponível na resposta
-              STOP_REASON=$(echo "$BODY" | jq -r '.stop_reason // "unknown"')
+              # Tentar extrair informações úteis da resposta
+              STOP_REASON=$(echo "$BODY" | jq -r '.stop_reason // empty')
+              if [ -n "$STOP_REASON" ]; then
+                REASON_INFO=" (stop_reason: $STOP_REASON)"
+              else
+                REASON_INFO=""
+              fi
               echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
-              echo "⚠️ Resposta recebida mas com formato inesperado (stop_reason: $STOP_REASON). Verifique os logs do workflow para mais detalhes." >> $GITHUB_ENV
+              echo "⚠️ Resposta recebida mas com formato inesperado${REASON_INFO}. Verifique os logs do workflow para mais detalhes." >> $GITHUB_ENV
               echo "EOF" >> $GITHUB_ENV
             fi
           fi
