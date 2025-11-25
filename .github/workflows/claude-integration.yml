@@ -17,8 +17,10 @@ jobs:
     steps:
       - name: Verificar API key
         id: check-key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          if [ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
             echo "has_key=false" >> $GITHUB_OUTPUT
           else
             echo "has_key=true" >> $GITHUB_OUTPUT
