@@ -1,7 +1,7 @@
 ---
 
-name:
-description:
+name:  # e.g., code-reviewer, docs-helper
+description:  # e.g., "Helps review code for security issues"
 ---
 # Fill in the fields below to create a basic custom agent for your repository.
 # The Copilot CLI can be used for local testing: https://gh.io/customagents/cli
