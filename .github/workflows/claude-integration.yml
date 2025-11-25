@@ -35,8 +35,22 @@ jobs:
             echo "EVENT_BODY=$BODY" >> $GITHUB_ENV
           fi
 
+      - name: Verificar chave da API
+        id: check-api-key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "API_KEY_CONFIGURED=false" >> $GITHUB_ENV
+            echo "⚠️ Chave da API ANTHROPIC_API_KEY não está configurada nos secrets do repositório."
+          else
+            echo "API_KEY_CONFIGURED=true" >> $GITHUB_ENV
+            echo "✅ Chave da API configurada."
+          fi
+
       - name: Chamar Claude AI
         id: claude-response
+        if: env.API_KEY_CONFIGURED == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -76,10 +90,31 @@ jobs:
             echo "❌ Erro na API (HTTP $HTTP_CODE): $ERROR_MSG" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
           else
-            echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
-            echo "$BODY" | jq -r '.content[0].text // "Erro ao processar resposta"' >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
+            # Extrai o texto da resposta com tratamento de erro melhorado
+            RESPONSE_TEXT=$(echo "$BODY" | jq -r '.content[0].text // empty')
+            if [ -z "$RESPONSE_TEXT" ]; then
+              echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+              echo "⚠️ Resposta recebida mas sem conteúdo de texto. Verifique o formato da resposta da API." >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+            else
+              echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+              echo "$RESPONSE_TEXT" >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+            fi
           fi
+
+      - name: Definir resposta para chave não configurada
+        if: env.API_KEY_CONFIGURED == 'false'
+        run: |
+          echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+          echo "⚠️ **Configuração necessária**: O secret \`ANTHROPIC_API_KEY\` não está configurado neste repositório." >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "Para habilitar a integração com Claude AI, adicione o secret nas configurações do repositório:" >> $GITHUB_ENV
+          echo "1. Vá em **Settings** > **Secrets and variables** > **Actions**" >> $GITHUB_ENV
+          echo "2. Clique em **New repository secret**" >> $GITHUB_ENV
+          echo "3. Nome: \`ANTHROPIC_API_KEY\`" >> $GITHUB_ENV
+          echo "4. Valor: sua chave de API da Anthropic" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Postar comentário com resposta do Claude
         if: env.EVENT_NUMBER != ''
