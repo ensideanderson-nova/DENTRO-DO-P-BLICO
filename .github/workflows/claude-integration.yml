@@ -40,6 +40,14 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
+          # Verificar se a API key está configurada
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+            echo "❌ Erro: ANTHROPIC_API_KEY não está configurada. Configure o secret no repositório." >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            exit 0
+          fi
+
           # Remove aspas extras do EVENT_BODY se existirem
           CLEAN_BODY=$(echo "$EVENT_BODY" | sed 's/^"//;s/"$//')
 
@@ -71,14 +79,26 @@ jobs:
           echo "Status HTTP: $HTTP_CODE"
 
           if [ "$HTTP_CODE" != "200" ]; then
-            ERROR_MSG=$(echo "$BODY" | jq -r '.error.message // "Erro desconhecido na API"')
+            ERROR_MSG=$(echo "$BODY" | jq -r '.error.message // .error.type // "Erro desconhecido na API"')
+            ERROR_TYPE=$(echo "$BODY" | jq -r '.error.type // "unknown"')
             echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
-            echo "❌ Erro na API (HTTP $HTTP_CODE): $ERROR_MSG" >> $GITHUB_ENV
+            echo "❌ Erro na API (HTTP $HTTP_CODE - $ERROR_TYPE): $ERROR_MSG" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
           else
-            echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
-            echo "$BODY" | jq -r '.content[0].text // "Erro ao processar resposta"' >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
+            # Verificar se a resposta tem a estrutura esperada
+            CONTENT_TYPE=$(echo "$BODY" | jq -r '.content[0].type // "unknown"')
+            if [ "$CONTENT_TYPE" = "text" ]; then
+              TEXT_CONTENT=$(echo "$BODY" | jq -r '.content[0].text')
+              echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+              echo "$TEXT_CONTENT" >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+            else
+              # Tentar extrair qualquer texto disponível na resposta
+              STOP_REASON=$(echo "$BODY" | jq -r '.stop_reason // "unknown"')
+              echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
+              echo "⚠️ Resposta recebida mas com formato inesperado (stop_reason: $STOP_REASON). Verifique os logs do workflow para mais detalhes." >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+            fi
           fi
 
       - name: Postar comentário com resposta do Claude
