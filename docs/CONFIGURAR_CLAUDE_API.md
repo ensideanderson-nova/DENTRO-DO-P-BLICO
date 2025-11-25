@@ -86,7 +86,7 @@ Para evitar custos inesperados:
 
 1. **Limite os workflows**: Adicione condições `if` para executar apenas em eventos específicos
 2. **Use modelos mais baratos**: `claude-3-haiku-20240307` é mais econômico
-3. **Reduza max_tokens**: Limite o tamanho das respostas
+3. **Reduza `max_tokens`**: Limite o tamanho das respostas
 
 Exemplo de limitação:
 ```yaml
