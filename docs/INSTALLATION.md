@@ -3,8 +3,8 @@
 ## Requisitos do Sistema
 
 ### Sistema Operacional
-- macOS 10.15 (Catalina) ou superior
-- Acesso de administrador (sudo)
+- macOS 10.15 (Catalina) ou superior, Linux ou Windows com WSL
+- Permissões de escrita no diretório home
 
 ### Software Necessário
 - Python 3.8 ou superior
@@ -65,7 +65,7 @@ bash install.sh
 ```
 
 O script irá:
-1. Criar a estrutura em `/Users/Shared/ENSIDE_ORGANIZADO/`
+1. Criar a estrutura em `~/ENSIDE_ORGANIZADO/`
 2. Instalar a skill do Claude Code em `~/.claude/skills/organize-pdfs/`
 3. Criar workspace em `~/WORKSPACE/`
 4. Aplicar cores no Finder
@@ -76,7 +76,7 @@ O script irá:
 
 ```bash
 # Verificar estrutura principal
-ls -la /Users/Shared/ENSIDE_ORGANIZADO/
+ls -la ~/ENSIDE_ORGANIZADO/
 
 # Verificar skill
 ls -la ~/.claude/skills/organize-pdfs/
@@ -96,11 +96,8 @@ Se preferir instalar manualmente:
 ### 1. Criar Estrutura Principal
 
 ```bash
-# Criar diretório principal
-sudo mkdir -p /Users/Shared/ENSIDE_ORGANIZADO
-
-# Ajustar permissões
-sudo chown -R $USER:staff /Users/Shared/ENSIDE_ORGANIZADO
+# Criar diretório principal (não precisa de sudo no home)
+mkdir -p ~/ENSIDE_ORGANIZADO
 
 # Executar script de criação
 bash scripts/organize_master.sh
@@ -190,9 +187,8 @@ O Claude deve ativar a skill automaticamente.
 ### Erro: Permissão Negada
 
 ```bash
-# Ajustar permissões
-sudo chown -R $USER:staff /Users/Shared/ENSIDE_ORGANIZADO
-chmod -R 755 /Users/Shared/ENSIDE_ORGANIZADO
+# Ajustar permissões (no diretório home não precisa de sudo)
+chmod -R 755 ~/ENSIDE_ORGANIZADO
 ```
 
 ### Erro: Python não encontrado
@@ -268,7 +264,7 @@ chmod +x ~/.claude/skills/organize-pdfs/*.{py,sh}
 
 ```bash
 # Remover estrutura principal (CUIDADO: apaga todos os documentos!)
-sudo rm -rf /Users/Shared/ENSIDE_ORGANIZADO
+rm -rf ~/ENSIDE_ORGANIZADO
 
 # Remover skill
 rm -rf ~/.claude/skills/organize-pdfs
@@ -306,3 +302,16 @@ Após a instalação:
 Problemas na instalação?
 - Issues: https://github.com/ensideanderson-nova/ENSIDE-PUBLICO/issues
 - Email: suporte@enside.com.br
+
+## Configuração do Claude AI (GitHub Actions)
+
+Para habilitar a integração automática do Claude AI nas Issues e Pull Requests:
+
+1. Obtenha uma API Key em https://console.anthropic.com
+2. Configure o secret `ANTHROPIC_API_KEY` no repositório
+3. Veja o guia completo: [CONFIGURAR_CLAUDE_API.md](CONFIGURAR_CLAUDE_API.md)
+
+### Erro "x-api-key header is required"
+
+Se você vir este erro nos comentários automáticos, significa que o secret não está configurado.
+Siga as instruções em [CONFIGURAR_CLAUDE_API.md](CONFIGURAR_CLAUDE_API.md) para resolver.

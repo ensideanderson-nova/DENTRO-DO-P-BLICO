@@ -8,7 +8,7 @@ import os
 import json
 from pathlib import Path
 
-BASE = "/Users/Shared/ENSIDE_ORGANIZADO"
+BASE = os.path.expanduser("~/ENSIDE_ORGANIZADO")
 
 # Cores VIBRANTES e claras
 CORES = {

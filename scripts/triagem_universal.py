@@ -15,7 +15,7 @@ import re
 import json
 
 # Configuracao
-BASE = Path("/Users/Shared/ENSIDE_ORGANIZADO")
+BASE = Path(os.path.expanduser("~/ENSIDE_ORGANIZADO"))
 
 # ===============================================================================
 # CATEGORIAS DO SISTEMA (15 categorias com cores e tags)
