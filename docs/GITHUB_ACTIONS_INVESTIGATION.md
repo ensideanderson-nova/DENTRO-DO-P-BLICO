@@ -61,15 +61,15 @@ The `Claude AI Integration` workflow is designed to:
 3. Post Claude's analysis as a comment back to the issue/PR
 
 ### Key Steps
-1. **Obter conteúdo do evento** (Get event content)
+1. **Get Event Content** (`Obter conteúdo do evento`)
    - Extracts title, body, number, and action from issues or PRs
    
-2. **Chamar Claude AI** (Call Claude AI)
+2. **Call Claude AI** (`Chamar Claude AI`)
    - Uses Anthropic API to analyze the event
    - Requires `ANTHROPIC_API_KEY` secret
    - Uses model: `claude-3-5-sonnet-20240620`
    
-3. **Postar comentário** (Post comment)
+3. **Post Comment** (`Postar comentário com resposta do Claude`)
    - Posts Claude's response as a comment
    - Handles both issues and pull requests
 
