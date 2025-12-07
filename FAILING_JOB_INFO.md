@@ -41,7 +41,7 @@ No explicit error messages are available. The workflow shows:
 ## Investigation Report
 
 For a comprehensive analysis of this issue, see:
-📄 **[GitHub Actions Investigation Report](./GITHUB_ACTIONS_INVESTIGATION.md)**
+📄 **[GitHub Actions Investigation Report](docs/GITHUB_ACTIONS_INVESTIGATION.md)**
 
 This report includes:
 - Complete workflow configuration analysis
