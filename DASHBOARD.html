@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENSIDE - Sistema de Organização de Arquivos</title>
+    <style>
+        :root {
+            /* Cores das 15 Categorias */
+            --cor-01-inbox: linear-gradient(135deg, #9b59b6, #8e44ad);
+            --cor-02-documentos: linear-gradient(135deg, #3498db, #2980b9);
+            --cor-03-financeiro: linear-gradient(135deg, #27ae60, #219653);
+            --cor-04-juridico: linear-gradient(135deg, #e74c3c, #c0392b);
+            --cor-05-saude: linear-gradient(135deg, #1abc9c, #16a085);
+            --cor-06-imoveis: linear-gradient(135deg, #f39c12, #d68910);
+            --cor-07-veiculos: linear-gradient(135deg, #e91e63, #c2185b);
+            --cor-08-educacao: linear-gradient(135deg, #00bcd4, #0097a7);
+            --cor-09-trabalho: linear-gradient(135deg, #ff5722, #e64a19);
+            --cor-10-projetos: linear-gradient(135deg, #673ab7, #512da8);
+            --cor-11-midia: linear-gradient(135deg, #ff9800, #f57c00);
+            --cor-12-comunicacao: linear-gradient(135deg, #4caf50, #388e3c);
+            --cor-13-compras: linear-gradient(135deg, #795548, #5d4037);
+            --cor-14-seguranca: linear-gradient(135deg, #607d8b, #455a64);
+            --cor-15-backup: linear-gradient(135deg, #9e9e9e, #757575);
+
+            /* Cores base */
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-green: #00ff88;
+            --accent-yellow: #ffd700;
+            --border-color: rgba(255,255,255,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-yellow));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Search */
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            min-width: 250px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            padding-left: 10px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Controls */
+        .controls {
+            background: var(--bg-secondary);
+            padding: 15px 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .controls-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .view-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: var(--accent-yellow);
+            color: var(--bg-primary);
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .categories-list {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .categories-list.active {
+            display: flex;
+        }
+
+        .categories-grid.hidden {
+            display: none;
+        }
+
+        /* Category Card */
+        .category-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            padding: 20px;
+            position: relative;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        /* Category Colors */
+        .cat-01 .card-header::before { background: var(--cor-01-inbox); }
+        .cat-02 .card-header::before { background: var(--cor-02-documentos); }
+        .cat-03 .card-header::before { background: var(--cor-03-financeiro); }
+        .cat-04 .card-header::before { background: var(--cor-04-juridico); }
+        .cat-05 .card-header::before { background: var(--cor-05-saude); }
+        .cat-06 .card-header::before { background: var(--cor-06-imoveis); }
+        .cat-07 .card-header::before { background: var(--cor-07-veiculos); }
+        .cat-08 .card-header::before { background: var(--cor-08-educacao); }
+        .cat-09 .card-header::before { background: var(--cor-09-trabalho); }
+        .cat-10 .card-header::before { background: var(--cor-10-projetos); }
+        .cat-11 .card-header::before { background: var(--cor-11-midia); }
+        .cat-12 .card-header::before { background: var(--cor-12-comunicacao); }
+        .cat-13 .card-header::before { background: var(--cor-13-compras); }
+        .cat-14 .card-header::before { background: var(--cor-14-seguranca); }
+        .cat-15 .card-header::before { background: var(--cor-15-backup); }
+
+        .cat-01 .card-icon { background: var(--cor-01-inbox); }
+        .cat-02 .card-icon { background: var(--cor-02-documentos); }
+        .cat-03 .card-icon { background: var(--cor-03-financeiro); }
+        .cat-04 .card-icon { background: var(--cor-04-juridico); }
+        .cat-05 .card-icon { background: var(--cor-05-saude); }
+        .cat-06 .card-icon { background: var(--cor-06-imoveis); }
+        .cat-07 .card-icon { background: var(--cor-07-veiculos); }
+        .cat-08 .card-icon { background: var(--cor-08-educacao); }
+        .cat-09 .card-icon { background: var(--cor-09-trabalho); }
+        .cat-10 .card-icon { background: var(--cor-10-projetos); }
+        .cat-11 .card-icon { background: var(--cor-11-midia); }
+        .cat-12 .card-icon { background: var(--cor-12-comunicacao); }
+        .cat-13 .card-icon { background: var(--cor-13-compras); }
+        .cat-14 .card-icon { background: var(--cor-14-seguranca); }
+        .cat-15 .card-icon { background: var(--cor-15-backup); }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .tag-pessoal { background: rgba(155, 89, 182, 0.3); color: #bb86fc; }
+        .tag-empresa { background: rgba(52, 152, 219, 0.3); color: #64b5f6; }
+        .tag-urgente { background: rgba(231, 76, 60, 0.3); color: #ef5350; }
+        .tag-sensivel { background: rgba(241, 196, 15, 0.3); color: #fdd835; }
+        .tag-tecnico { background: rgba(0, 188, 212, 0.3); color: #4dd0e1; }
+
+        /* Subcategories */
+        .card-body {
+            padding: 0 20px 20px;
+        }
+
+        .subcategories {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .category-card.expanded .subcategories {
+            display: block;
+        }
+
+        .subcategory {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .subcategory:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .subcategory-icon {
+            margin-right: 10px;
+            opacity: 0.7;
+        }
+
+        .subcategory-count {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Files Section */
+        .files-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .files-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .file-icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .file-name {
+            flex: 1;
+        }
+
+        .file-date {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* List View */
+        .category-list-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-list-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .list-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 20px;
+        }
+
+        .list-info {
+            flex: 1;
+        }
+
+        .list-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .list-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .list-tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 30px 40px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-info {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-btn.primary {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .footer-btn.secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Import Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover, .drop-zone.active {
+            border-color: var(--accent-green);
+            background: rgba(0,255,136,0.05);
+        }
+
+        .drop-zone-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .drop-zone-text {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .drop-zone-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                display: none;
+            }
+
+            .filter-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .category-card:nth-child(1) { animation-delay: 0.05s; }
+        .category-card:nth-child(2) { animation-delay: 0.1s; }
+        .category-card:nth-child(3) { animation-delay: 0.15s; }
+        .category-card:nth-child(4) { animation-delay: 0.2s; }
+        .category-card:nth-child(5) { animation-delay: 0.25s; }
+        .category-card:nth-child(6) { animation-delay: 0.3s; }
+        .category-card:nth-child(7) { animation-delay: 0.35s; }
+        .category-card:nth-child(8) { animation-delay: 0.4s; }
+        .category-card:nth-child(9) { animation-delay: 0.45s; }
+        .category-card:nth-child(10) { animation-delay: 0.5s; }
+        .category-card:nth-child(11) { animation-delay: 0.55s; }
+        .category-card:nth-child(12) { animation-delay: 0.6s; }
+        .category-card:nth-child(13) { animation-delay: 0.65s; }
+        .category-card:nth-child(14) { animation-delay: 0.7s; }
+        .category-card:nth-child(15) { animation-delay: 0.75s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">E</div>
+                <div>
+                    <h1>ENSIDE</h1>
+                    <p>Sistema de Organizacao de Arquivos</p>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="Buscar arquivos ou categorias...">
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalCategories">15</div>
+                    <div class="stat-label">Categorias</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalFiles">0</div>
+                    <div class="stat-label">Arquivos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalSize">0 GB</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls -->
+    <div class="controls">
+        <div class="controls-content">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Todas</button>
+                <button class="filter-btn" data-filter="pessoal">Pessoal</button>
+                <button class="filter-btn" data-filter="empresa">Empresa</button>
+                <button class="filter-btn" data-filter="urgente">Urgente</button>
+                <button class="filter-btn" data-filter="sensivel">Sensivel</button>
+                <button class="filter-btn" data-filter="tecnico">Tecnico</button>
+            </div>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="grid" title="Grade">◻◻</button>
+                <button class="view-btn" data-view="list" title="Lista">≡</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Grid View -->
+        <div class="categories-grid" id="categoriesGrid">
+
+            <!-- 01 INBOX -->
+            <div class="category-card cat-01" data-category="01_INBOX" data-tags="pessoal urgente">
+                <div class="card-header">
+                    <div class="card-icon">📥</div>
+                    <h3 class="card-title">01 INBOX</h3>
+                    <p class="card-count">Triagem de novos arquivos</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                        <span class="tag tag-urgente">Urgente</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('01_INBOX/Para_Classificar')">
+                            <span class="subcategory-icon">📁</span>
+                            Para Classificar
+                            <span class="subcategory-count">12</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('01_INBOX/Downloads')">
+                            <span class="subcategory-icon">📁</span>
+                            Downloads
+                            <span class="subcategory-count">8</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('01_INBOX/Emails')">
+                            <span class="subcategory-icon">📁</span>
+                            Emails
+                            <span class="subcategory-count">5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 DOCUMENTOS PESSOAIS -->
+            <div class="category-card cat-02" data-category="02_DOCUMENTOS_PESSOAIS" data-tags="pessoal sensivel">
+                <div class="card-header">
+                    <div class="card-icon">📄</div>
+                    <h3 class="card-title">02 DOCUMENTOS PESSOAIS</h3>
+                    <p class="card-count">CPF, RG, CNH, Certidoes</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                        <span class="tag tag-sensivel">Sensivel</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('02_DOCUMENTOS_PESSOAIS/CPF')">
+                            <span class="subcategory-icon">📁</span>
+                            CPF
+                            <span class="subcategory-count">3</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('02_DOCUMENTOS_PESSOAIS/RG')">
+                            <span class="subcategory-icon">📁</span>
+                            RG
+                            <span class="subcategory-count">2</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('02_DOCUMENTOS_PESSOAIS/CNH')">
+                            <span class="subcategory-icon">📁</span>
+                            CNH
+                            <span class="subcategory-count">4</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('02_DOCUMENTOS_PESSOAIS/Certidoes')">
+                            <span class="subcategory-icon">📁</span>
+                            Certidoes
+                            <span class="subcategory-count">6</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('02_DOCUMENTOS_PESSOAIS/Comprovantes')">
+                            <span class="subcategory-icon">📁</span>
+                            Comprovantes
+                            <span class="subcategory-count">15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 FINANCEIRO -->
+            <div class="category-card cat-03" data-category="03_FINANCEIRO" data-tags="pessoal empresa sensivel">
+                <div class="card-header">
+                    <div class="card-icon">💰</div>
+                    <h3 class="card-title">03 FINANCEIRO</h3>
+                    <p class="card-count">Bancos, Impostos, Investimentos</p>
+                    <div class="card-tags">
+                        <span class="tag tag-empresa">Empresa</span>
+                        <span class="tag tag-sensivel">Sensivel</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('03_FINANCEIRO/Bancos')">
+                            <span class="subcategory-icon">🏦</span>
+                            Bancos
+                            <span class="subcategory-count">24</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('03_FINANCEIRO/Impostos')">
+                            <span class="subcategory-icon">📁</span>
+                            Impostos
+                            <span class="subcategory-count">18</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('03_FINANCEIRO/Investimentos')">
+                            <span class="subcategory-icon">📈</span>
+                            Investimentos
+                            <span class="subcategory-count">7</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('03_FINANCEIRO/Contas_Pagar')">
+                            <span class="subcategory-icon">📁</span>
+                            Contas a Pagar
+                            <span class="subcategory-count">12</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('03_FINANCEIRO/Contas_Receber')">
+                            <span class="subcategory-icon">📁</span>
+                            Contas a Receber
+                            <span class="subcategory-count">9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04 JURIDICO -->
+            <div class="category-card cat-04" data-category="04_JURIDICO" data-tags="empresa urgente sensivel">
+                <div class="card-header">
+                    <div class="card-icon">⚖️</div>
+                    <h3 class="card-title">04 JURIDICO</h3>
+                    <p class="card-count">Contratos, Processos, Procuracoes</p>
+                    <div class="card-tags">
+                        <span class="tag tag-empresa">Empresa</span>
+                        <span class="tag tag-urgente">Urgente</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('04_JURIDICO/Contratos')">
+                            <span class="subcategory-icon">📁</span>
+                            Contratos
+                            <span class="subcategory-count">15</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('04_JURIDICO/Processos')">
+                            <span class="subcategory-icon">📁</span>
+                            Processos
+                            <span class="subcategory-count">3</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('04_JURIDICO/Procuracoes')">
+                            <span class="subcategory-icon">📁</span>
+                            Procuracoes
+                            <span class="subcategory-count">4</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('04_JURIDICO/CNPJ')">
+                            <span class="subcategory-icon">📁</span>
+                            CNPJ Empresa
+                            <span class="subcategory-count">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05 SAUDE -->
+            <div class="category-card cat-05" data-category="05_SAUDE" data-tags="pessoal sensivel">
+                <div class="card-header">
+                    <div class="card-icon">🏥</div>
+                    <h3 class="card-title">05 SAUDE</h3>
+                    <p class="card-count">Exames, Receitas, Planos</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                        <span class="tag tag-sensivel">Sensivel</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('05_SAUDE/Exames')">
+                            <span class="subcategory-icon">📁</span>
+                            Exames
+                            <span class="subcategory-count">22</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('05_SAUDE/Receitas')">
+                            <span class="subcategory-icon">📁</span>
+                            Receitas
+                            <span class="subcategory-count">8</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('05_SAUDE/Plano_Saude')">
+                            <span class="subcategory-icon">📁</span>
+                            Plano de Saude
+                            <span class="subcategory-count">5</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('05_SAUDE/Vacinas')">
+                            <span class="subcategory-icon">📁</span>
+                            Vacinas
+                            <span class="subcategory-count">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06 IMOVEIS -->
+            <div class="category-card cat-06" data-category="06_IMOVEIS" data-tags="pessoal empresa sensivel">
+                <div class="card-header">
+                    <div class="card-icon">🏠</div>
+                    <h3 class="card-title">06 IMOVEIS</h3>
+                    <p class="card-count">Escrituras, IPTU, Condominios</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                        <span class="tag tag-sensivel">Sensivel</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('06_IMOVEIS/Escrituras')">
+                            <span class="subcategory-icon">📁</span>
+                            Escrituras
+                            <span class="subcategory-count">2</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('06_IMOVEIS/IPTU')">
+                            <span class="subcategory-icon">📁</span>
+                            IPTU
+                            <span class="subcategory-count">6</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('06_IMOVEIS/Condominio')">
+                            <span class="subcategory-icon">📁</span>
+                            Condominio
+                            <span class="subcategory-count">12</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('06_IMOVEIS/Contratos_Aluguel')">
+                            <span class="subcategory-icon">📁</span>
+                            Contratos Aluguel
+                            <span class="subcategory-count">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07 VEICULOS -->
+            <div class="category-card cat-07" data-category="07_VEICULOS" data-tags="pessoal">
+                <div class="card-header">
+                    <div class="card-icon">🚗</div>
+                    <h3 class="card-title">07 VEICULOS</h3>
+                    <p class="card-count">CRLV, Multas, Seguros</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('07_VEICULOS/CRLV')">
+                            <span class="subcategory-icon">📁</span>
+                            CRLV
+                            <span class="subcategory-count">4</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('07_VEICULOS/IPVA')">
+                            <span class="subcategory-icon">📁</span>
+                            IPVA
+                            <span class="subcategory-count">3</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('07_VEICULOS/Multas')">
+                            <span class="subcategory-icon">📁</span>
+                            Multas
+                            <span class="subcategory-count">2</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('07_VEICULOS/Seguros')">
+                            <span class="subcategory-icon">📁</span>
+                            Seguros
+                            <span class="subcategory-count">5</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('07_VEICULOS/Manutencao')">
+                            <span class="subcategory-icon">📁</span>
+                            Manutencao
+                            <span class="subcategory-count">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08 EDUCACAO -->
+            <div class="category-card cat-08" data-category="08_EDUCACAO" data-tags="pessoal">
+                <div class="card-header">
+                    <div class="card-icon">🎓</div>
+                    <h3 class="card-title">08 EDUCACAO</h3>
+                    <p class="card-count">Diplomas, Certificados, Cursos</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('08_EDUCACAO/Diplomas')">
+                            <span class="subcategory-icon">📁</span>
+                            Diplomas
+                            <span class="subcategory-count">3</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('08_EDUCACAO/Certificados')">
+                            <span class="subcategory-icon">📁</span>
+                            Certificados
+                            <span class="subcategory-count">12</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('08_EDUCACAO/Cursos')">
+                            <span class="subcategory-icon">📁</span>
+                            Cursos
+                            <span class="subcategory-count">8</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('08_EDUCACAO/Materiais')">
+                            <span class="subcategory-icon">📁</span>
+                            Materiais
+                            <span class="subcategory-count">25</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09 TRABALHO -->
+            <div class="category-card cat-09" data-category="09_TRABALHO" data-tags="pessoal empresa">
+                <div class="card-header">
+                    <div class="card-icon">💼</div>
+                    <h3 class="card-title">09 TRABALHO</h3>
+                    <p class="card-count">Curriculos, Holerites, CTPS</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                        <span class="tag tag-empresa">Empresa</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('09_TRABALHO/Curriculos')">
+                            <span class="subcategory-icon">📁</span>
+                            Curriculos
+                            <span class="subcategory-count">5</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('09_TRABALHO/Holerites')">
+                            <span class="subcategory-icon">📁</span>
+                            Holerites
+                            <span class="subcategory-count">24</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('09_TRABALHO/CTPS')">
+                            <span class="subcategory-icon">📁</span>
+                            CTPS
+                            <span class="subcategory-count">2</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('09_TRABALHO/INSS')">
+                            <span class="subcategory-icon">📁</span>
+                            INSS/FGTS
+                            <span class="subcategory-count">6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10 PROJETOS -->
+            <div class="category-card cat-10" data-category="10_PROJETOS" data-tags="empresa tecnico">
+                <div class="card-header">
+                    <div class="card-icon">🚀</div>
+                    <h3 class="card-title">10 PROJETOS</h3>
+                    <p class="card-count">Desenvolvimento, Sistemas, Codigo</p>
+                    <div class="card-tags">
+                        <span class="tag tag-empresa">Empresa</span>
+                        <span class="tag tag-tecnico">Tecnico</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('10_PROJETOS/Desenvolvimento')">
+                            <span class="subcategory-icon">📁</span>
+                            Desenvolvimento
+                            <span class="subcategory-count">15</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('10_PROJETOS/Documentacao')">
+                            <span class="subcategory-icon">📁</span>
+                            Documentacao
+                            <span class="subcategory-count">8</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('10_PROJETOS/Design')">
+                            <span class="subcategory-icon">📁</span>
+                            Design
+                            <span class="subcategory-count">12</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('10_PROJETOS/Backups')">
+                            <span class="subcategory-icon">📁</span>
+                            Backups
+                            <span class="subcategory-count">5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11 MIDIA -->
+            <div class="category-card cat-11" data-category="11_MIDIA" data-tags="pessoal">
+                <div class="card-header">
+                    <div class="card-icon">🎬</div>
+                    <h3 class="card-title">11 MIDIA</h3>
+                    <p class="card-count">Fotos, Videos, Musicas</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('11_MIDIA/Fotos')">
+                            <span class="subcategory-icon">📷</span>
+                            Fotos
+                            <span class="subcategory-count">450</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('11_MIDIA/Videos')">
+                            <span class="subcategory-icon">🎥</span>
+                            Videos
+                            <span class="subcategory-count">85</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('11_MIDIA/Musicas')">
+                            <span class="subcategory-icon">🎵</span>
+                            Musicas
+                            <span class="subcategory-count">230</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('11_MIDIA/Screenshots')">
+                            <span class="subcategory-icon">📁</span>
+                            Screenshots
+                            <span class="subcategory-count">120</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12 COMUNICACAO -->
+            <div class="category-card cat-12" data-category="12_COMUNICACAO" data-tags="empresa">
+                <div class="card-header">
+                    <div class="card-icon">📧</div>
+                    <h3 class="card-title">12 COMUNICACAO</h3>
+                    <p class="card-count">Emails, Mensagens, Contatos</p>
+                    <div class="card-tags">
+                        <span class="tag tag-empresa">Empresa</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('12_COMUNICACAO/Emails_Importantes')">
+                            <span class="subcategory-icon">📁</span>
+                            Emails Importantes
+                            <span class="subcategory-count">45</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('12_COMUNICACAO/Contatos')">
+                            <span class="subcategory-icon">📁</span>
+                            Contatos
+                            <span class="subcategory-count">180</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('12_COMUNICACAO/Whatsapp')">
+                            <span class="subcategory-icon">📁</span>
+                            Whatsapp Backup
+                            <span class="subcategory-count">12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13 COMPRAS -->
+            <div class="category-card cat-13" data-category="13_COMPRAS" data-tags="pessoal empresa">
+                <div class="card-header">
+                    <div class="card-icon">🛒</div>
+                    <h3 class="card-title">13 COMPRAS</h3>
+                    <p class="card-count">Notas Fiscais, Garantias, Manuais</p>
+                    <div class="card-tags">
+                        <span class="tag tag-pessoal">Pessoal</span>
+                        <span class="tag tag-empresa">Empresa</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('13_COMPRAS/Notas_Fiscais')">
+                            <span class="subcategory-icon">📁</span>
+                            Notas Fiscais
+                            <span class="subcategory-count">156</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('13_COMPRAS/Garantias')">
+                            <span class="subcategory-icon">📁</span>
+                            Garantias
+                            <span class="subcategory-count">23</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('13_COMPRAS/Manuais')">
+                            <span class="subcategory-icon">📁</span>
+                            Manuais
+                            <span class="subcategory-count">18</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14 SEGURANCA -->
+            <div class="category-card cat-14" data-category="14_SEGURANCA" data-tags="sensivel tecnico">
+                <div class="card-header">
+                    <div class="card-icon">🔐</div>
+                    <h3 class="card-title">14 SEGURANCA</h3>
+                    <p class="card-count">Senhas, Certificados, Chaves</p>
+                    <div class="card-tags">
+                        <span class="tag tag-sensivel">Sensivel</span>
+                        <span class="tag tag-tecnico">Tecnico</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('14_SEGURANCA/Certificados_Digitais')">
+                            <span class="subcategory-icon">📁</span>
+                            Certificados Digitais
+                            <span class="subcategory-count">3</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('14_SEGURANCA/Chaves_SSH')">
+                            <span class="subcategory-icon">📁</span>
+                            Chaves SSH
+                            <span class="subcategory-count">5</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('14_SEGURANCA/2FA_Backup')">
+                            <span class="subcategory-icon">📁</span>
+                            2FA Backup
+                            <span class="subcategory-count">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15 BACKUP -->
+            <div class="category-card cat-15" data-category="15_BACKUP" data-tags="tecnico">
+                <div class="card-header">
+                    <div class="card-icon">💾</div>
+                    <h3 class="card-title">15 BACKUP</h3>
+                    <p class="card-count">Backups, Arquivos Antigos</p>
+                    <div class="card-tags">
+                        <span class="tag tag-tecnico">Tecnico</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="subcategories">
+                        <div class="subcategory" onclick="openFolder('15_BACKUP/Diario')">
+                            <span class="subcategory-icon">📁</span>
+                            Diario
+                            <span class="subcategory-count">7</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('15_BACKUP/Semanal')">
+                            <span class="subcategory-icon">📁</span>
+                            Semanal
+                            <span class="subcategory-count">4</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('15_BACKUP/Mensal')">
+                            <span class="subcategory-icon">📁</span>
+                            Mensal
+                            <span class="subcategory-count">12</span>
+                        </div>
+                        <div class="subcategory" onclick="openFolder('15_BACKUP/Arquivos_Antigos')">
+                            <span class="subcategory-icon">📁</span>
+                            Arquivos Antigos
+                            <span class="subcategory-count">156</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- List View -->
+        <div class="categories-list" id="categoriesList">
+            <!-- Populated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <strong>ENSIDE</strong> - Sistema de Organizacao de Arquivos v2.0<br>
+                <small>Atualizado em: <span id="lastUpdate"></span></small>
+            </div>
+            <div class="footer-actions">
+                <button class="footer-btn secondary" onclick="openSettings()">Configuracoes</button>
+                <button class="footer-btn primary" onclick="openImportModal()">Importar Arquivos</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Import Modal -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Importar Arquivos</h2>
+                <button class="modal-close" onclick="closeImportModal()">&times;</button>
+            </div>
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-icon">📁</div>
+                <p class="drop-zone-text">Arraste arquivos aqui</p>
+                <p class="drop-zone-hint">ou clique para selecionar</p>
+                <input type="file" id="fileInput" multiple style="display: none;">
+            </div>
+            <div id="importProgress" style="margin-top: 20px; display: none;">
+                <p style="color: var(--accent-green);">Processando arquivos...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const BASE_PATH = '/Users/Shared/ENSIDE_ORGANIZADO';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            setupEventListeners();
+            updateStats();
+        });
+
+        function initializeApp() {
+            // Set last update date
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('pt-BR');
+
+            // Generate list view
+            generateListView();
+        }
+
+        function setupEventListeners() {
+            // Search
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                filterCategories(e.target.value.toLowerCase());
+            });
+
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterByTag(btn.dataset.filter);
+                });
+            });
+
+            // View toggle
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    toggleView(btn.dataset.view);
+                });
+            });
+
+            // Category cards expand
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('subcategory')) {
+                        card.classList.toggle('expanded');
+                    }
+                });
+            });
+
+            // Drop zone
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('active');
+            });
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('active');
+            });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('active');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+        }
+
+        function filterCategories(searchTerm) {
+            document.querySelectorAll('.category-card').forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const desc = card.querySelector('.card-count').textContent.toLowerCase();
+                const visible = title.includes(searchTerm) || desc.includes(searchTerm);
+                card.style.display = visible ? '' : 'none';
+            });
+        }
+
+        function filterByTag(tag) {
+            document.querySelectorAll('.category-card').forEach(card => {
+                if (tag === 'all') {
+                    card.style.display = '';
+                } else {
+                    const cardTags = card.dataset.tags || '';
+                    card.style.display = cardTags.includes(tag) ? '' : 'none';
+                }
+            });
+        }
+
+        function toggleView(view) {
+            const grid = document.getElementById('categoriesGrid');
+            const list = document.getElementById('categoriesList');
+
+            if (view === 'grid') {
+                grid.classList.remove('hidden');
+                list.classList.remove('active');
+            } else {
+                grid.classList.add('hidden');
+                list.classList.add('active');
+            }
+        }
+
+        function generateListView() {
+            const listContainer = document.getElementById('categoriesList');
+            const cards = document.querySelectorAll('.category-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent;
+                const desc = card.querySelector('.card-count').textContent;
+                const icon = card.querySelector('.card-icon').textContent;
+                const catClass = Array.from(card.classList).find(c => c.startsWith('cat-'));
+
+                const listItem = document.createElement('div');
+                listItem.className = 'category-list-item';
+                listItem.innerHTML = `
+                    <div class="list-icon ${catClass}">${icon}</div>
+                    <div class="list-info">
+                        <div class="list-title">${title}</div>
+                        <div class="list-meta">${desc}</div>
+                    </div>
+                    <div class="list-tags">
+                        ${card.querySelector('.card-tags').innerHTML}
+                    </div>
+                `;
+                listContainer.appendChild(listItem);
+            });
+        }
+
+        function updateStats() {
+            // Calculate total files (sum of subcategory counts)
+            let totalFiles = 0;
+            document.querySelectorAll('.subcategory-count').forEach(count => {
+                totalFiles += parseInt(count.textContent) || 0;
+            });
+            document.getElementById('totalFiles').textContent = totalFiles;
+
+            // Estimate size
+            const estimatedGB = (totalFiles * 0.002).toFixed(1);
+            document.getElementById('totalSize').textContent = estimatedGB + ' GB';
+        }
+
+        function openFolder(path) {
+            const fullPath = `${BASE_PATH}/${path}`;
+            // On macOS, use the open command
+            window.location.href = `file://${fullPath}`;
+            console.log('Opening:', fullPath);
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('active');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+        }
+
+        function openSettings() {
+            alert('Configuracoes em desenvolvimento.\n\nBase Path: ' + BASE_PATH);
+        }
+
+        function handleFiles(files) {
+            const progress = document.getElementById('importProgress');
+            progress.style.display = 'block';
+
+            // Classify and organize files
+            Array.from(files).forEach(file => {
+                const category = classifyFile(file);
+                console.log(`${file.name} -> ${category}`);
+            });
+
+            setTimeout(() => {
+                progress.innerHTML = '<p style="color: var(--accent-green);">Arquivos importados com sucesso!</p>';
+                setTimeout(() => {
+                    closeImportModal();
+                    progress.style.display = 'none';
+                    progress.innerHTML = '<p style="color: var(--accent-green);">Processando arquivos...</p>';
+                }, 2000);
+            }, 1500);
+        }
+
+        function classifyFile(file) {
+            const name = file.name.toLowerCase();
+            const ext = name.split('.').pop();
+
+            // Classification rules
+            const rules = {
+                '02_DOCUMENTOS_PESSOAIS': ['cpf', 'rg', 'cnh', 'certidao', 'nascimento', 'casamento'],
+                '03_FINANCEIRO': ['banco', 'extrato', 'imposto', 'irpf', 'nota_fiscal', 'boleto', 'fatura'],
+                '04_JURIDICO': ['contrato', 'procuracao', 'escritura', 'processo', 'cnpj'],
+                '05_SAUDE': ['exame', 'receita', 'laudo', 'vacina', 'medico', 'hospital'],
+                '06_IMOVEIS': ['iptu', 'condominio', 'aluguel', 'escritura', 'imovel'],
+                '07_VEICULOS': ['crlv', 'ipva', 'multa', 'veiculo', 'carro', 'moto'],
+                '08_EDUCACAO': ['diploma', 'certificado', 'curso', 'escola', 'faculdade'],
+                '09_TRABALHO': ['curriculo', 'holerite', 'ctps', 'inss', 'fgts', 'emprego'],
+                '11_MIDIA': ['foto', 'video', 'musica', 'mp3', 'mp4', 'jpg', 'png', 'mov'],
+                '13_COMPRAS': ['nota', 'garantia', 'manual', 'compra', 'recibo'],
+                '14_SEGURANCA': ['senha', 'certificado_digital', 'chave', 'ssh', '2fa']
+            };
+
+            // Check by extension
+            const mediaExts = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'mp3', 'wav'];
+            if (mediaExts.includes(ext)) {
+                return '11_MIDIA';
+            }
+
+            // Check by keywords in filename
+            for (const [category, keywords] of Object.entries(rules)) {
+                if (keywords.some(kw => name.includes(kw))) {
+                    return category;
+                }
+            }
+
+            // Default to INBOX
+            return '01_INBOX';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeImportModal();
+            }
+            if (e.key === '/' && !e.target.matches('input')) {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+    </script>
+</body>
+</html>
