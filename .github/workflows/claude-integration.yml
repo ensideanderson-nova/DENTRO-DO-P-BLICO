@@ -35,8 +35,22 @@ jobs:
             echo "EVENT_BODY=$BODY" >> $GITHUB_ENV
           fi
 
+      - name: Verificar API Key
+        id: check-api-key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "API_KEY_VALID=false" >> $GITHUB_ENV
+            echo "⚠️ ANTHROPIC_API_KEY não está configurada. Pulando integração com Claude AI."
+          else
+            echo "API_KEY_VALID=true" >> $GITHUB_ENV
+            echo "✅ API Key configurada."
+          fi
+
       - name: Chamar Claude AI
         id: claude-response
+        if: env.API_KEY_VALID == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -75,14 +89,16 @@ jobs:
             echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
             echo "❌ Erro na API (HTTP $HTTP_CODE): $ERROR_MSG" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
+            echo "SHOULD_POST_COMMENT=false" >> $GITHUB_ENV
           else
             echo "CLAUDE_RESPONSE<<EOF" >> $GITHUB_ENV
             echo "$BODY" | jq -r '.content[0].text // "Erro ao processar resposta"' >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
+            echo "SHOULD_POST_COMMENT=true" >> $GITHUB_ENV
           fi
 
       - name: Postar comentário com resposta do Claude
-        if: env.EVENT_NUMBER != ''
+        if: env.EVENT_NUMBER != '' && env.API_KEY_VALID == 'true' && env.SHOULD_POST_COMMENT == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
