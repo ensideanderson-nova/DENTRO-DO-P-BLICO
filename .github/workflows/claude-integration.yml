@@ -24,15 +24,18 @@ jobs:
             echo "EVENT_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
             echo "EVENT_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
             echo "EVENT_ACTION=${{ github.event.action }}" >> $GITHUB_ENV
-            # Escapa aspas e quebras de linha no body
-            BODY=$(echo '${{ github.event.issue.body }}' | jq -Rs .)
-            echo "EVENT_BODY=$BODY" >> $GITHUB_ENV
+            # Usar heredoc para evitar problemas com caracteres especiais
+            echo "EVENT_BODY<<EOF" >> $GITHUB_ENV
+            echo '${{ github.event.issue.body }}' >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
           else
             echo "EVENT_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
             echo "EVENT_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
             echo "EVENT_ACTION=${{ github.event.action }}" >> $GITHUB_ENV
-            BODY=$(echo '${{ github.event.pull_request.body }}' | jq -Rs .)
-            echo "EVENT_BODY=$BODY" >> $GITHUB_ENV
+            # Usar heredoc para evitar problemas com caracteres especiais
+            echo "EVENT_BODY<<EOF" >> $GITHUB_ENV
+            echo '${{ github.event.pull_request.body }}' >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
           fi
 
       - name: Verificar API Key
@@ -54,13 +57,10 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          # Remove aspas extras do EVENT_BODY se existirem
-          CLEAN_BODY=$(echo "$EVENT_BODY" | sed 's/^"//;s/"$//')
-
           # Cria o payload JSON (usando modelo mais acessível)
           PAYLOAD=$(jq -n \
             --arg model "claude-3-5-sonnet-20240620" \
-            --arg content "Você é um assistente do GitHub. Analise este evento:\n\nTipo: ${{ env.EVENT_TYPE }}\nAção: ${{ env.EVENT_ACTION }}\nTítulo: ${{ env.EVENT_TITLE }}\nConteúdo: ${CLEAN_BODY}\n\nForneça uma análise útil e sugestões em português." \
+            --arg content "Você é um assistente do GitHub. Analise este evento:\n\nTipo: ${{ env.EVENT_TYPE }}\nAção: ${{ env.EVENT_ACTION }}\nTítulo: ${{ env.EVENT_TITLE }}\nConteúdo: ${EVENT_BODY}\n\nForneça uma análise útil e sugestões em português." \
             '{
               model: $model,
               max_tokens: 2048,
